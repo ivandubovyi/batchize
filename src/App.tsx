@@ -1,21 +1,25 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Nav } from "@/components/Nav";
 import { Footerdemo } from "@/components/ui/footer-section";
 import { Landing } from "@/pages/Landing";
-import { Review } from "@/pages/Review";
-import { AppShell } from "@/pages/app/Shell";
-import { Dashboard } from "@/pages/app/Dashboard";
-import { QuickScore } from "@/pages/app/QuickScore";
-import { Application } from "@/pages/app/Application";
-import { AppReview } from "@/pages/app/AppReview";
-import { Interview } from "@/pages/app/Interview";
-import { Chancing } from "@/pages/app/Chancing";
-import { Tools } from "@/pages/app/Tools";
-import { Partner } from "@/pages/app/Partner";
-import { Drafts } from "@/pages/app/Drafts";
-import { Submit } from "@/pages/app/Submit";
-import { Grill } from "@/pages/app/Grill";
-import { Pricing } from "@/pages/Pricing";
+
+// The landing page is the only thing most visitors ever see, and it is what
+// search results point at. Everything behind it loads on demand so the first
+// paint does not carry the whole workspace.
+const Review = lazy(() => import("@/pages/Review").then((m) => ({ default: m.Review })));
+const AppShell = lazy(() => import("@/pages/app/Shell").then((m) => ({ default: m.AppShell })));
+const Dashboard = lazy(() => import("@/pages/app/Dashboard").then((m) => ({ default: m.Dashboard })));
+const QuickScore = lazy(() => import("@/pages/app/QuickScore").then((m) => ({ default: m.QuickScore })));
+const Application = lazy(() => import("@/pages/app/Application").then((m) => ({ default: m.Application })));
+const AppReview = lazy(() => import("@/pages/app/AppReview").then((m) => ({ default: m.AppReview })));
+const Interview = lazy(() => import("@/pages/app/Interview").then((m) => ({ default: m.Interview })));
+const Chancing = lazy(() => import("@/pages/app/Chancing").then((m) => ({ default: m.Chancing })));
+const Tools = lazy(() => import("@/pages/app/Tools").then((m) => ({ default: m.Tools })));
+const Partner = lazy(() => import("@/pages/app/Partner").then((m) => ({ default: m.Partner })));
+const Drafts = lazy(() => import("@/pages/app/Drafts").then((m) => ({ default: m.Drafts })));
+const Submit = lazy(() => import("@/pages/app/Submit").then((m) => ({ default: m.Submit })));
+const Grill = lazy(() => import("@/pages/app/Grill").then((m) => ({ default: m.Grill })));
+const Pricing = lazy(() => import("@/pages/Pricing").then((m) => ({ default: m.Pricing })));
 
 function parseHash(hash: string): { route: string; query: URLSearchParams } {
   const [path, qs] = hash.split("?");
@@ -84,7 +88,15 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
-      {page}
+      <Suspense
+        fallback={
+          <div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">
+            Loading…
+          </div>
+        }
+      >
+        {page}
+      </Suspense>
       <Footerdemo isDarkMode={isDarkMode} onToggleDarkMode={setIsDarkMode} />
     </div>
   );
