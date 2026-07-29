@@ -1,0 +1,4 @@
+node_modules
+dist
+evals/*.bundle.mjs
+.DS_Store

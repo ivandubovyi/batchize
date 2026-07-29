@@ -1,0 +1,117 @@
+// Labeled corpus of realistic YC application answers.
+// expect: signals that MUST fire. forbid: signals that must NOT fire (false positives).
+export const CASES = [
+  // ---------- one-liner ----------
+  { name: "oneliner/buzzy-overlong", qid: "one_liner",
+    text: "A revolutionary AI-powered platform that will disrupt the entire logistics industry",
+    expect: ["cap is 50", "Buzzwords"], forbid: [] },
+  { name: "oneliner/clean-short", qid: "one_liner",
+    text: "Stripe for freight invoices",
+    expect: [], forbid: ["Buzzwords", "cap is 50", "Mission statement"] },
+  { name: "oneliner/mission", qid: "one_liner",
+    text: "Our mission is to democratize logistics",
+    expect: ["Mission statement", "Buzzwords"], forbid: ["cap is 50"] },
+  { name: "oneliner/plain-but-vague", qid: "one_liner",
+    text: "Software for small businesses",
+    expect: [], forbid: ["Buzzwords", "cap is 50"] },
+
+  // ---------- product description ----------
+  { name: "product/no-mechanics", qid: "product_description",
+    text: "We are building an innovative solution that empowers logistics teams to work seamlessly and unlock their full potential across the entire supply chain ecosystem.",
+    expect: ["Buzzwords", "what a user actually does"], forbid: [] },
+  { name: "product/good-mechanics", qid: "product_description",
+    text: "A broker connects their TMS in one click. Every invoice is then generated, financed within 24 hours, and auto-reconciled. Users can see the status of each invoice on a single dashboard instead of three separate tools.",
+    expect: ["real product mechanics"], forbid: ["Buzzwords", "what a user actually does", "Only"] },
+  { name: "product/thin", qid: "product_description",
+    text: "An app for freight.",
+    expect: ["Only"], forbid: [] },
+
+  // ---------- traction ----------
+  { name: "traction/no-numbers", qid: "how_far",
+    text: "We are growing really fast and a lot of users love the product so far.",
+    expect: ["No numbers at all", "Unquantified claim"], forbid: [] },
+  { name: "traction/bare-numbers", qid: "how_far",
+    text: "We have 1200 users and 45 companies signed up so far in total.",
+    expect: ["without a time period"], forbid: ["No numbers at all"] },
+  { name: "traction/strong", qid: "how_far",
+    text: "Launched 8 weeks ago. 23 brokers paying $400/mo, $9.2k MRR growing 18% w/w, 92% retention.",
+    expect: ["concrete numbers"], forbid: ["No numbers at all", "without a time period", "Only"] },
+  { name: "traction/honest-early", qid: "how_far",
+    text: "Not launched yet. We have a working prototype and 12 brokers on a waitlist after 3 weeks of building.",
+    expect: [], forbid: ["No numbers at all"] },
+
+  // ---------- competitors ----------
+  { name: "competitors/none-claim", qid: "competitors",
+    text: "We have no competitors. Nobody else is doing anything like this in the freight space today.",
+    expect: ["no competitors"], forbid: [] },
+  { name: "competitors/named", qid: "competitors",
+    text: "TriumphPay and Denim are closest. They optimize financing speed; we learned brokers actually pay for reconciliation, not faster money.",
+    expect: ["Names real alternatives"], forbid: ["no competitors", "No alternative is actually named"] },
+  { name: "competitors/manual-substitute", qid: "competitors",
+    text: "Most brokers just use spreadsheets and email threads to reconcile, which takes about 11 days per cycle.",
+    expect: [], forbid: ["no competitors", "No alternative is actually named"] },
+  { name: "competitors/vague", qid: "competitors",
+    text: "There are a few other startups in this space but we are much better and faster than all of them.",
+    expect: ["No alternative is actually named"], forbid: [] },
+
+  // ---------- why idea ----------
+  { name: "why/no-personal", qid: "why_idea",
+    text: "This is a very large market with strong tailwinds, and we think there is a big opportunity for a new entrant to capture meaningful share over the next few years.",
+    expect: ["No lived experience", "Hedging"], forbid: [] },
+  { name: "why/personal-strong", qid: "why_idea",
+    text: "When I was running ops at a 40-truck carrier, I spent every Friday chasing invoices by phone. We interviewed 30 brokers and discovered their factoring system and TMS never talk to each other.",
+    expect: ["Founder-market fit"], forbid: ["No lived experience", "Only"] },
+
+  // ---------- equity ----------
+  { name: "equity/evasive", qid: "equity_split",
+    text: "We think it is roughly equal, maybe we will sort of figure out the exact split later on.",
+    expect: ["evasive"], forbid: [] },
+  { name: "equity/plain", qid: "equity_split",
+    text: "50/50 between the two founders, with a 10% option pool reserved for early hires.",
+    expect: [], forbid: ["evasive", "No percentages"] },
+
+  // ---------- style ----------
+  { name: "style/superlative-noproof", qid: "whats_new",
+    text: "We are the only team that can solve this and our approach is guaranteed to work for everyone.",
+    expect: ["superlative"], forbid: [] },
+  { name: "style/comparative-nobaseline", qid: "whats_new",
+    text: "Our system is much faster and cheaper than what teams use today for this work.",
+    expect: ["than what?"], forbid: [] },
+  { name: "style/filler-heavy", qid: "money",
+    text: "At the end of the day, in order to make money, it is important to note that basically we will essentially charge a fee of $400 per month per broker.",
+    expect: ["Filler phrases"], forbid: [] },
+  { name: "style/runon", qid: "hacked_system",
+    text: "I got our carrier onto a shipper's approved vendor list by driving to their distribution yard early one morning and personally fixing their dock scheduling spreadsheet which had been broken for months and then staying to train two of their staff on it which meant they owed us a favor and added us the same week.",
+    expect: ["runs"], forbid: [] },
+  { name: "style/clean-concise", qid: "who_codes",
+    text: "Both founders write the code. Riley owns the backend and I own the client.",
+    expect: [], forbid: ["Buzzwords", "Hedging", "Only"] },
+];
+
+// Cross-application cases
+export const CROSS_CASES = [
+  { name: "cross/real-contradiction",
+    answers: { how_far: "23 brokers paying us today.", users: "We have 40 brokers using it weekly." },
+    expect: ["Contradictory numbers"], forbid: [] },
+  { name: "cross/market-sizing-ok",
+    answers: { how_far: "23 brokers paying $400/mo.", money: "There are 12,000 brokers in the US market, so this is a $57M opportunity." },
+    expect: [], forbid: ["Contradictory numbers"] },
+  { name: "cross/research-count-ok",
+    answers: { how_far: "23 brokers paying $400/mo.", why_idea: "We interviewed 30 brokers before building anything." },
+    expect: [], forbid: ["Contradictory numbers"] },
+  { name: "cross/projection-ok",
+    answers: { how_far: "23 brokers paying today.", money: "We expect 500 brokers by the end of next year." },
+    expect: [], forbid: ["Contradictory numbers"] },
+  { name: "cross/history-ok",
+    answers: { how_far: "23 brokers paying today.", why_idea: "When we started we had 4 brokers testing it." },
+    expect: [], forbid: ["Contradictory numbers"] },
+  { name: "cross/revenue-no-users",
+    answers: { users: "None yet, zero users.", revenue: "$4,000 MRR." },
+    expect: ["Revenue but no users"], forbid: [] },
+  { name: "cross/duplicate-sentence",
+    answers: {
+      product_description: "We are building the definitive infrastructure layer for freight brokers everywhere.",
+      why_idea: "We are building the definitive infrastructure layer for freight brokers everywhere.",
+    },
+    expect: ["same sentence"], forbid: [] },
+];

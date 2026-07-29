@@ -1,0 +1,82 @@
+// Interview prep: drill questions in the style YC partners are widely
+// reported to ask in the 10-minute interview, grouped by topic. Mastery is
+// tracked per topic from your own self-ratings, the same way test prep
+// tracks mastery per skill.
+
+export type CatId =
+  | "product"
+  | "traction"
+  | "market"
+  | "team"
+  | "business"
+  | "insight";
+
+export interface Category {
+  id: CatId;
+  title: string;
+}
+
+export const CATEGORIES: Category[] = [
+  { id: "product", title: "Product" },
+  { id: "traction", title: "Traction" },
+  { id: "market", title: "Market & Competition" },
+  { id: "team", title: "Team" },
+  { id: "business", title: "Business Model" },
+  { id: "insight", title: "Insight & Why" },
+];
+
+export interface InterviewQ {
+  id: string;
+  cat: CatId;
+  q: string;
+  probe: string; // what the question is really testing
+}
+
+export const QUESTION_BANK: InterviewQ[] = [
+  // Product
+  { id: "p1", cat: "product", q: "What does your company do?", probe: "Can you say it in one plain sentence without warming up? This is usually the first question; a rambling answer sets the tone for the whole interview." },
+  { id: "p2", cat: "product", q: "Walk me through what happens after I sign up.", probe: "Do you know your own product cold? Concrete user-level detail proves you built and use it." },
+  { id: "p3", cat: "product", q: "What have you learned from your users so far?", probe: "Are you actually talking to users, and did anything you learned change the product?" },
+  { id: "p4", cat: "product", q: "What's the hardest technical part of what you're building?", probe: "Whether the founders understand their own difficulty, and whether a founder can answer without hand-waving." },
+  { id: "p5", cat: "product", q: "What will you build next, and why that?", probe: "Prioritization. The best answers tie the next thing to something users asked for or a metric you're trying to move." },
+  // Traction
+  { id: "t1", cat: "traction", q: "How do you know people want this?", probe: "The single most common interview question. Lead with your strongest concrete evidence: usage, revenue, retention, or direct user behavior." },
+  { id: "t2", cat: "traction", q: "How many users do you have, and how do you define a user?", probe: "Precision. A small, precisely-defined number beats a big vague one; fuzziness here reads as inflation." },
+  { id: "t3", cat: "traction", q: "What's your growth rate week over week?", probe: "Do you measure it at all? Knowing the number instantly matters almost as much as the number." },
+  { id: "t4", cat: "traction", q: "What's your retention like?", probe: "Whether people come back. If you don't measure it yet, say so plainly and give your best proxy." },
+  { id: "t5", cat: "traction", q: "Why isn't it growing faster?", probe: "Honesty under pressure. A specific bottleneck you're attacking beats an excuse or deflection." },
+  // Market
+  { id: "m1", cat: "market", q: "Who are your competitors, and why will you win?", probe: "Never say there are none. Name them, then give the one thing you understand that they don't act on." },
+  { id: "m2", cat: "market", q: "Why hasn't this been done before?", probe: "Why-now insight: what changed (technology, regulation, behavior) that makes this possible today?" },
+  { id: "m3", cat: "market", q: "How big can this get?", probe: "Napkin math from the bottom up: price times plausible customers, not an analyst's top-down TAM slide." },
+  { id: "m4", cat: "market", q: "What do people use instead of your product today?", probe: "If you can't name the substitute (even a spreadsheet), partners doubt the need exists." },
+  { id: "m5", cat: "market", q: "What's the biggest risk to this company?", probe: "Self-awareness. Naming a real risk and your plan beats claiming there isn't one." },
+  // Team
+  { id: "e1", cat: "team", q: "Why are you the right people to build this?", probe: "Founder-market fit in one breath: lived experience, unique access, or proof of relentless execution." },
+  { id: "e2", cat: "team", q: "How did you meet, and how long have you worked together?", probe: "Cofounder breakup risk. Evidence of having built things together matters more than years of friendship." },
+  { id: "e3", cat: "team", q: "Who does what on the team?", probe: "Clear ownership. Overlapping vague roles suggest neither of you ships." },
+  { id: "e4", cat: "team", q: "Who writes the code?", probe: "Partners want founders building the product. Outsourced development is a serious flag." },
+  { id: "e5", cat: "team", q: "Are you working on this full-time? If not, when?", probe: "Commitment. A concrete condition for going full-time is acceptable; an open-ended maybe is not." },
+  // Business
+  { id: "b1", cat: "business", q: "How do you make money?", probe: "One simple mechanism, stated instantly. Complexity here reads as not having thought it through." },
+  { id: "b2", cat: "business", q: "What do you charge, and how did you pick that price?", probe: "Whether you've actually tried charging. A price tested on real customers beats a price from a spreadsheet." },
+  { id: "b3", cat: "business", q: "What does it cost you to acquire a customer?", probe: "Do you know your funnel at all? If it's too early, say what you do know: where users come from." },
+  { id: "b4", cat: "business", q: "Why will this be a big business and not a feature?", probe: "The wedge-to-platform story: what you start with and what it expands into." },
+  // Insight
+  { id: "i1", cat: "insight", q: "Why did you pick this idea?", probe: "The origin story. Lived experience and specific observed pain beat opportunity-spotting." },
+  { id: "i2", cat: "insight", q: "What do you understand about this space that others don't?", probe: "The counterintuitive insight test. The best answers sound slightly wrong until explained." },
+  { id: "i3", cat: "insight", q: "What surprised you most since starting?", probe: "Are you learning? A real surprise proves contact with reality; no surprises suggests no users." },
+  { id: "i4", cat: "insight", q: "If this fails, why will it have failed?", probe: "Clear-eyed thinking. Founders who can name the failure mode are usually the ones avoiding it." },
+  { id: "i5", cat: "insight", q: "Why now, and why you?", probe: "The compressed version of the whole interview. Practice a 20-second answer that hits both halves." },
+];
+
+export const questionsInCat = (cat: CatId | "all") =>
+  cat === "all" ? QUESTION_BANK : QUESTION_BANK.filter((q) => q.cat === cat);
+
+export const RATING_LABELS = ["Fumbled", "Rough", "Solid", "Nailed it"];
+
+export function masteryPct(m?: { reps: number; sum: number }): number | null {
+  if (!m || m.reps === 0) return null;
+  // ratings are 1-4; map the average to 0-100
+  return Math.round(((m.sum / m.reps - 1) / 3) * 100);
+}
