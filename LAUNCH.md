@@ -186,6 +186,19 @@ things that were already fine.
 
 ---
 
+## The two instant tools
+
+These are easier to share than the checker itself, because they need no
+application and work in four seconds:
+
+- `https://ivandubovyi.github.io/batchize/one-liner-tester/`
+- `https://ivandubovyi.github.io/batchize/safe-calculator/`
+
+Worth posting on their own where a full application checker would be off
+topic. A reply in a thread where somebody is arguing about their one-liner
+does more than a launch post, and it is not spam if the link answers the
+question being asked.
+
 ## Email to people you know
 
 Short, no pitch, ask for the one thing you need.
