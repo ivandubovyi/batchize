@@ -1050,3 +1050,154 @@ export function auditApplication(data: AppData): FullAudit {
     greens: count("green"),
   };
 }
+
+// ---------------------------------------------------------------------------
+// The catalogue
+// ---------------------------------------------------------------------------
+
+/**
+ * A public description of what actually gets checked, built from the same
+ * lexicons the checks use. The static content pages render this, so the
+ * documentation cannot drift from the product: adding a buzzword to
+ * BUZZ_STEMS changes the published page on the next build.
+ */
+export interface CheckDoc {
+  id: string;
+  title: string;
+  /** Why a partner cares, not what the code does. */
+  why: string;
+  /** Real terms from the lexicon this check uses. */
+  examples: string[];
+  sev: Sev;
+}
+
+export const CHECK_CATALOGUE: CheckDoc[] = [
+  {
+    id: "buzzwords",
+    title: "Buzzwords",
+    why:
+      "Adjectives are what people write when they have not yet decided what the thing is. A partner skimming for the product finds a category instead, and moves on.",
+    examples: [...BUZZ_STEMS.slice(0, 10).map((s) => s + "…"), ...BUZZ_PHRASES.slice(0, 5)],
+    sev: "red",
+  },
+  {
+    id: "mission-speak",
+    title: "Mission statements where a product should be",
+    why:
+      "The question asks what the company does. An answer about why it exists reads as an answer from someone who has not built the thing yet.",
+    examples: MISSION_SPEAK.slice(0, 8),
+    sev: "red",
+  },
+  {
+    id: "hedges",
+    title: "Hedged claims",
+    why:
+      "Hedging in writing usually marks a disagreement between cofounders that was never settled. Partners find the seam in the interview, so it is better to settle it now.",
+    examples: HEDGES.slice(0, 10),
+    sev: "amber",
+  },
+  {
+    id: "weasel",
+    title: "Weasel numbers",
+    why:
+      "If you know the number, use it. If you do not know it, that is the more important finding, and a vague quantifier is how it hides.",
+    examples: WEASEL.slice(0, 10),
+    sev: "amber",
+  },
+  {
+    id: "superlatives",
+    title: "Unsupported superlatives",
+    why:
+      "A claim to be first or best invites a partner to spend thirty seconds disproving it, and they will. Ordinary counting is fine; primacy claims are not.",
+    examples: SUPERLATIVES.slice(0, 8),
+    sev: "amber",
+  },
+  {
+    id: "filler",
+    title: "Filler",
+    why:
+      "Every phrase that carries no information costs you a line of a partner's attention, and attention on an application is measured in seconds.",
+    examples: FILLER.slice(0, 8),
+    sev: "amber",
+  },
+  {
+    id: "vague-time",
+    title: "Timing that pins down nothing",
+    why:
+      "Recently and soon sound like progress and commit to nothing. A date or a duration is the same number of words and it is checkable.",
+    examples: VAGUE_TIME.slice(0, 8),
+    sev: "amber",
+  },
+  {
+    id: "soft-usage",
+    title: "Signups presented as usage",
+    why:
+      "Signups are the easiest number to grow and the least predictive one. Active, paying and returning are different words for a reason, and a partner converts the first into the second immediately.",
+    examples: ["waitlist", "signed up", "registered", "created an account", "interested"],
+    sev: "red",
+  },
+  {
+    id: "passive",
+    title: "Passive voice hiding who did the work",
+    why:
+      "It was built tells a partner nothing about which of you can build. In an application about founders, that is the sentence you least want vague.",
+    examples: ["was built", "were shipped", "has been developed", "is being designed"],
+    sev: "amber",
+  },
+  {
+    id: "no-numbers",
+    title: "Answers that should contain numbers and do not",
+    why:
+      "Some questions get skimmed for figures before they are read. An adjective where a figure should be is the most visible gap in an application.",
+    examples: ["how far along are you", "how many users", "revenue", "how will you make money"],
+    sev: "red",
+  },
+  {
+    id: "no-alternatives",
+    title: "Competitors not named",
+    why:
+      "Having no competitors reads as not having looked. There is always a substitute, even if it is a spreadsheet and a phone call, and naming it is what shows you understand the market.",
+    examples: ["we have no competitors", "nobody else does this", "we are the only"],
+    sev: "red",
+  },
+  {
+    id: "no-personal",
+    title: "No lived experience where the question asks why you",
+    why:
+      "Why this idea is really asking why you rather than anyone else. A description of the market does not answer it, however accurate the market description is.",
+    examples: ["when I was", "at my last job", "we interviewed", "I spent", "we shipped"],
+    sev: "red",
+  },
+  {
+    id: "percent-no-base",
+    title: "Percentages with no base",
+    why:
+      "Three hundred percent growth is a perfectly good answer if you say growth from what. Without the denominator it reads as hiding a small number, which is usually correct.",
+    examples: ["300% growth", "doubled month over month", "up 40%"],
+    sev: "amber",
+  },
+  {
+    id: "cross-numbers",
+    title: "Numbers that contradict each other across answers",
+    why:
+      "This is the one nobody catches by rereading their own answers one at a time, and it is the one a partner cross-referencing finds first.",
+    examples: ["23 customers in one answer, 40 in another", "revenue where you said no users"],
+    sev: "red",
+  },
+  {
+    id: "cross-timeline",
+    title: "Timelines that do not line up",
+    why:
+      "A launch date that does not match how long you say you have been building reads as carelessness at best. Partners assume the less generous explanation.",
+    examples: ["launched last month, building for two years"],
+    sev: "red",
+  },
+  {
+    id: "duplication",
+    title: "The same sentence in two answers",
+    why:
+      "Pasting one answer into another is visible immediately and suggests you ran out of things to say, which is rarely true and always expensive.",
+    examples: ["identical sentences across questions"],
+    sev: "amber",
+  },
+];

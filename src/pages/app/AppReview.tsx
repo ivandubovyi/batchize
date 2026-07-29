@@ -5,6 +5,7 @@ import { narrativeCheck } from "@/lib/rewrite";
 import { Card, Donut, ScoreBar } from "@/components/app/shared";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ShieldCheck } from "lucide-react";
+import { ShareResult } from "@/components/app/ShareResult";
 
 const SEV_STYLES: Record<string, string> = {
   red: "border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950/40",
@@ -133,6 +134,8 @@ export function AppReview() {
           </div>
         </div>
       </Card>
+
+      {audit.coverage > 0 && <ShareResult audit={audit} />}
 
       {/* priorities */}
       {audit.priorities.length > 0 && (

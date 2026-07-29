@@ -21,7 +21,7 @@ const ORIGIN = "https://ivandubovyi.github.io";
 const SITE = ORIGIN + BASE;
 
 const { QUESTIONS, SECTIONS } = await import(join(ROOT, ".content-data.mjs"));
-const { EXPECT } = await import(join(ROOT, ".content-data.mjs"));
+const { EXPECT, CHECK_CATALOGUE } = await import(join(ROOT, ".content-data.mjs"));
 
 const esc = (s) =>
   String(s)
@@ -170,6 +170,8 @@ li{margin:.45em 0}
 .tip{border-left:3px solid var(--pri);padding:2px 0 2px 16px;margin:18px 0;font-size:17px}
 .big-cta{display:block;background:var(--pri);color:#fff;text-decoration:none;font-weight:700;text-align:center;padding:16px;border-radius:14px;margin:32px 0 8px}
 .note{font-size:14px;text-align:center;color:var(--mut)}
+.ex{font-size:14px;margin-top:10px}
+code{background:rgba(240,116,31,.1);color:var(--pri);border-radius:5px;padding:2px 7px;font-size:13px;font-family:ui-monospace,Menlo,monospace;display:inline-block;margin:2px 1px}
 `;
 
 // ---------------------------------------------------------------------------
@@ -213,7 +215,7 @@ ${QUESTIONS.filter((x) => x.section === q.section && x.id !== q.id)
       `<a class="q" href="${BASE}/questions/${slug(x.id)}/"><b>${esc(x.label)}</b><span>${esc(x.tip)}</span></a>`
   )
   .join("\n")}
-<p><a href="${BASE}/questions/">See all ${QUESTIONS.length} questions →</a></p>
+<p><a href="${BASE}/questions/">See all ${QUESTIONS.length} questions →</a> &nbsp; <a href="${BASE}/red-flags/">The full list of red flags →</a></p>
 `;
 
   return {
@@ -266,6 +268,7 @@ ${QUESTIONS.filter((q) => q.section === s.id)
 ).join("\n")}
 
 <h2>What gets checked, everywhere</h2>
+<p><a href="${BASE}/red-flags/">The full list of red flags, with the exact words each one catches →</a></p>
 ${UNIVERSAL.map(([h, b]) => `<div class="card"><h3>${esc(h)}</h3><p>${esc(b)}</p></div>`).join("\n")}
 
 <a class="big-cta" href="${BASE}/#/app">Check your application, free</a>
@@ -294,11 +297,62 @@ ${UNIVERSAL.map(([h, b]) => `<div class="card"><h3>${esc(h)}</h3><p>${esc(b)}</p
   };
 }
 
+function redFlagsPage() {
+  const canonical = `${SITE}/red-flags/`;
+  const reds = CHECK_CATALOGUE.filter((c) => c.sev === "red");
+  const ambers = CHECK_CATALOGUE.filter((c) => c.sev !== "red");
+
+  const card = (c) => `<div class="card"><h3>${esc(c.title)}</h3><p>${esc(c.why)}</p><p class="ex"><b>Caught in your writing:</b> ${c.examples.map((e) => `<code>${esc(e)}</code>`).join(" ")}</p></div>`;
+
+  const body = `
+<h1>The red flags a YC application gets rejected for</h1>
+<p class="lead">This is the full list of what Batchize looks for, written out. It is generated from the checker itself, so it is what actually runs rather than a description of it.</p>
+
+<h2>The ${reds.length} that do real damage</h2>
+<p>These are the findings that change how an application reads, rather than how it sounds.</p>
+${reds.map(card).join("\n")}
+
+<h2>The ${ambers.length} worth tightening</h2>
+<p>None of these sink an application on their own. Several together are what makes one feel unconvincing without a partner being able to say why.</p>
+${ambers.map(card).join("\n")}
+
+<h2>The one you cannot catch by rereading</h2>
+<p>Reading your own answers one at a time is precisely how contradictions survive. A user count in one answer that disagrees with another, revenue claimed where you said you have no users, a launch date that does not match how long you say you have been building: each answer is fine alone and the pair is not. Batchize reads them against each other, which is what a partner does.</p>
+
+<a class="big-cta" href="${BASE}/#/app">Check your application against all ${CHECK_CATALOGUE.length}, free</a>
+<p class="note">No account, no API key, nothing uploaded. The whole checker runs in your browser.</p>
+
+<h2>Where each one applies</h2>
+<p>Every check above runs on every answer. On top of them, each question has its own expectations. <a href="${BASE}/questions/">See all ${QUESTIONS.length} questions →</a></p>
+`;
+
+  return {
+    path: "red-flags/index.html",
+    url: canonical,
+    html: page({
+      title: "The red flags that sink YC applications, in full",
+      description: `The complete list of what a YC application gets marked down for: buzzwords, hedges, signups presented as usage, contradictions across answers, and ${CHECK_CATALOGUE.length - 4} more. Free checker, runs in your browser.`,
+      canonical,
+      body,
+      breadcrumb: `<a href="${BASE}/">Batchize</a> / Red flags`,
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: CHECK_CATALOGUE.map((c) => ({
+          "@type": "Question",
+          name: `Why does "${c.title}" hurt a YC application?`,
+          acceptedAnswer: { "@type": "Answer", text: c.why },
+        })),
+      },
+    }),
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Write
 // ---------------------------------------------------------------------------
 
-const pages = [indexPage(), ...QUESTIONS.map(questionPage)];
+const pages = [indexPage(), redFlagsPage(), ...QUESTIONS.map(questionPage)];
 
 for (const p of pages) {
   const full = join(DIST, p.path);
@@ -308,7 +362,7 @@ for (const p of pages) {
 
 const urls = [
   { loc: SITE + "/", priority: "1.0" },
-  ...pages.map((p) => ({ loc: p.url, priority: p.path === "questions/index.html" ? "0.9" : "0.7" })),
+  ...pages.map((p) => ({ loc: p.url, priority: p.path.endsWith("s/index.html") ? "0.9" : "0.7" })),
 ];
 
 await writeFile(

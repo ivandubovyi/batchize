@@ -68,6 +68,22 @@ export function Insight() {
         <span className="shrink-0 text-sm font-semibold text-primary">Read it →</span>
       </a>
 
+      <a
+        href={`${import.meta.env.BASE_URL}red-flags/`}
+        className="mt-3 flex flex-col items-center justify-between gap-3 rounded-2xl border border-border bg-accent/40 p-6 transition-colors hover:bg-accent sm:flex-row"
+      >
+        <span>
+          <span className="block font-semibold">
+            Every red flag it looks for, written out
+          </span>
+          <span className="block text-sm text-muted-foreground">
+            Generated from the checker itself, so it is what actually runs
+            rather than a description of it.
+          </span>
+        </span>
+        <span className="shrink-0 text-sm font-semibold text-primary">Read it →</span>
+      </a>
+
       <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground">
         The checks are tuned against a labelled corpus of realistic answers and
         measured on both what they catch and what they wrongly flag, because a

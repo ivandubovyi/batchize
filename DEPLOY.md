@@ -50,3 +50,27 @@ placeholder social buttons, dead Privacy/Terms links, and the
 There is no export/import. A visitor's application lives only in that
 browser's local storage, so clearing browser data loses it and it does not
 sync between devices.
+
+## Analytics
+
+GitHub Pages publishes no visitor statistics. None. `npm run traffic` reads
+the GitHub API, but that counts views of the **repository page**, not the site,
+so a zero there says nothing about whether founders are using the checker.
+
+Right now nobody knows whether anyone visits. That is the single biggest gap in
+this project, because every decision about what to build next is a guess until
+it closes.
+
+Closing it takes an account, which is why it is not already done. When you open
+one, `index.html` has a marked slot for the tag:
+
+**Cloudflare Web Analytics** (free, no cookies, no consent banner needed)
+1. dash.cloudflare.com, Web Analytics, add a site.
+2. Copy the beacon script tag.
+3. Paste it into `index.html` where the analytics comment is.
+
+**GoatCounter** (free for non-commercial, open source) works the same way.
+
+Whichever you pick, keep it cookieless. The whole product is built on nothing
+leaving the visitor's browser, and a tracker that sets an identifier would make
+the front page's claim untrue.

@@ -4,3 +4,5 @@ evals/*.bundle.mjs
 .DS_Store
 
 .content-data.mjs
+
+dist/.git/
