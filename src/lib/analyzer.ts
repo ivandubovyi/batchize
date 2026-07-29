@@ -31,7 +31,7 @@ export interface Finding {
  * Buzzword stems, matched with any suffix, so "revolutionary",
  * "Revolutionizing" and "revolutionise" are all caught by one entry.
  */
-const BUZZ_STEMS = [
+export const BUZZ_STEMS = [
   "revolutionar", "revolutioniz", "revolutionis", "disrupt", "synerg",
   "seamless", "frictionless", "innovat", "leverag", "empower", "paradigm",
   "holistic", "turnkey", "reimagin", "supercharg", "democratiz",
@@ -40,14 +40,14 @@ const BUZZ_STEMS = [
   "mission-critical", "value-add",
 ];
 
-const BUZZ_PHRASES = [
+export const BUZZ_PHRASES = [
   "cutting edge", "game-changing", "game changer", "next generation",
   "scalable solution", "solutions provider", "ecosystem play",
   "ai-powered platform", "one-stop shop", "unlock the power",
   "transform the way", "end-to-end solution", "best of breed",
 ];
 
-const MISSION_SPEAK = [
+export const MISSION_SPEAK = [
   "our mission", "our vision", "we are passionate", "we're passionate",
   "we believe in a world", "on a mission to", "our purpose", "we envision",
   "we dream of", "our north star",

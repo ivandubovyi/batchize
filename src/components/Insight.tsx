@@ -99,6 +99,20 @@ export function Insight() {
         >
           the interview questions that come next
         </a>
+        . Two instant tools need no application at all: the{" "}
+        <a
+          className="font-semibold text-primary hover:underline"
+          href={`${import.meta.env.BASE_URL}one-liner-tester/`}
+        >
+          one-liner tester
+        </a>{" "}
+        and the{" "}
+        <a
+          className="font-semibold text-primary hover:underline"
+          href={`${import.meta.env.BASE_URL}safe-calculator/`}
+        >
+          SAFE dilution calculator
+        </a>
         .
       </p>
 

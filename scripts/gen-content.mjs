@@ -13,6 +13,7 @@
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { oneLinerPage } from "./one-liner-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = join(ROOT, "dist");
@@ -21,7 +22,8 @@ const ORIGIN = "https://ivandubovyi.github.io";
 const SITE = ORIGIN + BASE;
 
 const { QUESTIONS, SECTIONS } = await import(join(ROOT, ".content-data.mjs"));
-const { EXPECT, CHECK_CATALOGUE, CATEGORIES, QUESTION_BANK, EXAMPLE_ANSWERS, EXAMPLE_COMPANY } =
+const { EXPECT, CHECK_CATALOGUE, CATEGORIES, QUESTION_BANK, EXAMPLE_ANSWERS, EXAMPLE_COMPANY,
+  BUZZ_STEMS, BUZZ_PHRASES, MISSION_SPEAK } =
   await import(join(ROOT, ".content-data.mjs"));
 
 const esc = (s) =>
@@ -172,6 +174,19 @@ li{margin:.45em 0}
 .big-cta{display:block;background:var(--pri);color:#fff;text-decoration:none;font-weight:700;text-align:center;padding:16px;border-radius:14px;margin:32px 0 8px}
 .note{font-size:14px;text-align:center;color:var(--mut)}
 .ex{font-size:14px;margin-top:10px}
+.lbl{display:block;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin-bottom:8px}
+textarea{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);font:inherit;font-size:18px;resize:vertical}
+textarea:focus{outline:2px solid var(--pri);outline-offset:1px}
+.count{text-align:right;font-size:13px;font-variant-numeric:tabular-nums;color:var(--mut);margin-top:6px}
+.count.near{color:#B54708}
+.count.over{color:#D92D20;font-weight:700}
+.fnd{border-radius:11px;padding:12px 14px;margin-bottom:9px;font-size:14.5px;line-height:1.55;color:var(--mut)}
+.fnd b{color:var(--fg)}
+.fnd.red{background:rgba(217,45,32,.1)}
+.fnd.amber{background:rgba(240,116,31,.12)}
+.fnd.green{background:rgba(18,183,106,.12)}
+.try{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--fg);font:inherit;font-size:13px;padding:5px 13px;margin:0 3px;cursor:pointer}
+.try:hover{border-color:var(--pri)}
 .row{display:flex;gap:8px;margin-bottom:8px}
 .row input{flex:1;min-width:0;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px}
 .row input:focus{outline:2px solid var(--pri);outline-offset:1px}
@@ -282,7 +297,9 @@ ${QUESTIONS.filter((q) => q.section === s.id)
 <h2>What gets checked, everywhere</h2>
 <p><a href="${BASE}/red-flags/">The full list of red flags, with the exact words each one catches →</a><br>
 <a href="${BASE}/example/">A worked example of strong answers →</a><br>
-<a href="${BASE}/interview-questions/">The interview questions that come next →</a></p>
+<a href="${BASE}/interview-questions/">The interview questions that come next →</a><br>
+<a href="${BASE}/one-liner-tester/">Test your one-liner instantly →</a><br>
+<a href="${BASE}/safe-calculator/">Post-money SAFE dilution calculator →</a></p>
 ${UNIVERSAL.map(([h, b]) => `<div class="card"><h3>${esc(h)}</h3><p>${esc(b)}</p></div>`).join("\n")}
 
 <a class="big-cta" href="${BASE}/#/app">Check your application, free</a>
@@ -557,6 +574,7 @@ const pages = [
   interviewPage(),
   examplePage(),
   safeCalculatorPage(),
+  oneLinerPage({ page, esc, BASE, SITE, QUESTIONS, BUZZ_STEMS, BUZZ_PHRASES, MISSION_SPEAK }),
   ...QUESTIONS.map(questionPage),
 ];
 
