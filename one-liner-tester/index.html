@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YC one-liner tester: 50 characters, checked instantly</title>
+<meta name="description" content="Paste your YC one-liner and see whether it fits the 50-character cap and whether it hides behind adjectives. Free, instant, nothing uploaded.">
+<link rel="canonical" href="https://ivandubovyi.github.io/batchize/one-liner-tester/">
+<meta property="og:title" content="YC one-liner tester: 50 characters, checked instantly">
+<meta property="og:description" content="Paste your YC one-liner and see whether it fits the 50-character cap and whether it hides behind adjectives. Free, instant, nothing uploaded.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ivandubovyi.github.io/batchize/one-liner-tester/">
+<meta property="og:site_name" content="Batchize">
+<meta property="og:image" content="https://ivandubovyi.github.io/batchize/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="YC one-liner tester: 50 characters, checked instantly">
+<meta name="twitter:description" content="Paste your YC one-liner and see whether it fits the 50-character cap and whether it hides behind adjectives. Free, instant, nothing uploaded.">
+<meta name="twitter:image" content="https://ivandubovyi.github.io/batchize/og.png">
+<link rel="icon" type="image/svg+xml" href="/batchize/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FDFBF7;--fg:#14161A;--mut:#5B6270;--line:#E7E3DA;--card:#fff;--pri:#F0741F}
+@media (prefers-color-scheme:dark){:root{--bg:#0E1013;--fg:#F3F4F6;--mut:#9BA3AF;--line:#24282F;--card:#15181D}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Plus Jakarta Sans',system-ui,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+header.site,footer.site{max-width:820px;margin:0 auto;padding:20px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+footer.site{display:block;border-top:1px solid var(--line);margin-top:64px;padding:28px 20px 64px;color:var(--mut);font-size:14px}
+footer.site .fine{font-size:13px;opacity:.8}
+.brand{font-weight:800;font-size:20px;text-decoration:none;color:var(--fg)}
+.brand span{color:var(--pri)}
+.cta{background:var(--pri);color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;white-space:nowrap}
+main{max-width:820px;margin:0 auto;padding:8px 20px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.15;letter-spacing:-.02em;margin:.4em 0 .3em}
+h2{font-size:clamp(21px,3vw,26px);letter-spacing:-.01em;margin:2em 0 .5em}
+h3{font-size:17px;margin:1.6em 0 .3em}
+p,li{color:var(--mut)}
+p.lead{font-size:19px;color:var(--mut)}
+a{color:var(--pri)}
+ul{padding-left:20px}
+li{margin:.45em 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:16px 0}
+.card h3{margin-top:0}
+.card p:last-child{margin-bottom:0}
+.q{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0;text-decoration:none}
+.q b{color:var(--fg);display:block;font-size:16px}
+.q span{color:var(--mut);font-size:14px}
+.crumbs{font-size:14px;color:var(--mut);margin:8px 0 0}
+.crumbs a{color:var(--mut)}
+.sec{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:2.4em 0 .6em}
+.tip{border-left:3px solid var(--pri);padding:2px 0 2px 16px;margin:18px 0;font-size:17px}
+.big-cta{display:block;background:var(--pri);color:#fff;text-decoration:none;font-weight:700;text-align:center;padding:16px;border-radius:14px;margin:32px 0 8px}
+.note{font-size:14px;text-align:center;color:var(--mut)}
+.ex{font-size:14px;margin-top:10px}
+.lbl{display:block;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin-bottom:8px}
+textarea{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);font:inherit;font-size:18px;resize:vertical}
+textarea:focus{outline:2px solid var(--pri);outline-offset:1px}
+.count{text-align:right;font-size:13px;font-variant-numeric:tabular-nums;color:var(--mut);margin-top:6px}
+.count.near{color:#B54708}
+.count.over{color:#D92D20;font-weight:700}
+.fnd{border-radius:11px;padding:12px 14px;margin-bottom:9px;font-size:14.5px;line-height:1.55;color:var(--mut)}
+.fnd b{color:var(--fg)}
+.fnd.red{background:rgba(217,45,32,.1)}
+.fnd.amber{background:rgba(240,116,31,.12)}
+.fnd.green{background:rgba(18,183,106,.12)}
+.try{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--fg);font:inherit;font-size:13px;padding:5px 13px;margin:0 3px;cursor:pointer}
+.try:hover{border-color:var(--pri)}
+.row{display:flex;gap:8px;margin-bottom:8px}
+.row input{flex:1;min-width:0;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px}
+.row input:focus{outline:2px solid var(--pri);outline-offset:1px}
+.row .rm{width:40px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--mut);font-size:19px;cursor:pointer}
+.ghost{border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--fg);font:inherit;font-weight:600;font-size:14px;padding:9px 16px;cursor:pointer}
+.out{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.out ul{margin:0 0 10px;padding-left:20px}
+.out li{color:var(--mut);font-size:15px}
+.out .big{font-size:19px;color:var(--fg);margin:6px 0}
+.out .muted{font-size:14px;color:var(--mut)}
+.out .warn{margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(240,116,31,.12);color:var(--fg);font-size:14px}
+code{background:rgba(240,116,31,.1);color:var(--pri);border-radius:5px;padding:2px 7px;font-size:13px;font-family:ui-monospace,Menlo,monospace;display:inline-block;margin:2px 1px}
+</style>
+
+</head>
+<body>
+<header class="site">
+  <a class="brand" href="/batchize/">Batchize<span>.</span></a>
+  <a class="cta" href="/batchize/#/app">Open the checker</a>
+</header>
+<main>
+<nav class="crumbs"><a href="/batchize/">Batchize</a> / One-liner tester</nav>
+
+<h1>YC one-liner tester</h1>
+<p class="lead">Describe what your company does in 50 characters or less. This checks the cap and the words that make a partner stop reading. It runs here in the page, and nothing you type is sent anywhere.</p>
+
+<div class="card">
+  <label class="lbl" for="ol">Your one-liner</label>
+  <textarea id="ol" rows="2" placeholder="Stripe for freight invoices" spellcheck="false"></textarea>
+  <div id="olcount" class="count">0 / 50</div>
+  <div id="olout" class="out"><p class="muted">Type your one-liner above.</p></div>
+  <p class="muted" style="margin-top:14px">Try one:
+    <button type="button" class="try" data-t="A revolutionary platform to disrupt logistics">a bad one</button>
+    <button type="button" class="try" data-t="Our mission is to empower every small carrier">a mission statement</button>
+    <button type="button" class="try" data-t="Stripe for freight invoices">a good one</button>
+  </p>
+</div>
+
+<h2>What the 50 characters are for</h2>
+<p>This is the first thing read and often the only thing remembered. Fifty characters is roughly eight words, which is not enough room for what the product feels like, so it forces the only useful answer: what it literally is.</p>
+<p>The shape that works most often is <b>a known thing, for a specific group</b>. "Stripe for freight invoices" works because the reader already knows what Stripe does, so the sentence spends its budget on the part they do not know. What fails is the reverse: a sentence that spends all fifty characters on adjectives and leaves the reader still asking what the thing does.</p>
+
+<h2>Three ways this answer goes wrong</h2>
+<ul>
+<li><b>Adjectives instead of a product.</b> Revolutionary, seamless, AI-powered. Every one of them is a word somebody writes when they have not decided what the thing is yet, and a partner has read all of them a thousand times.</li>
+<li><b>A category instead of a product.</b> "A platform for logistics" describes a shelf, not an object on it.</li>
+<li><b>Defining the thing by itself.</b> "Broker software for brokers" tells the reader nothing they did not get from your company name.</li>
+</ul>
+
+<h2>This is one of 26 questions</h2>
+<p>The one-liner is the cheapest one to fix and the least likely to be why an application fails. The expensive problems are the ones between answers: a user count here that disagrees with a user count there, revenue claimed where you said you have no users. Those are invisible when you read your answers one at a time.</p>
+
+<a class="big-cta" href="/batchize/#/app">Check all 26 answers, free</a>
+<p class="note">No account, no API key, nothing uploaded. The whole checker runs in your browser, like this tester.</p>
+
+<p><a href="/batchize/questions/one-liner/">More on this question →</a> &nbsp; <a href="/batchize/questions/">All 26 questions →</a> &nbsp; <a href="/batchize/red-flags/">The red flags →</a></p>
+<script>
+(function(){
+  var L = {"stems":["revolutionar","revolutioniz","revolutionis","disrupt","synerg","seamless","frictionless","innovat","leverag","empower","paradigm","holistic","turnkey","reimagin","supercharg","democratiz","gamechang","bleeding-edge","world-class","best-in-class","state-of-the-art","cutting-edge","next-gen","hyper-growth","mission-critical","value-add"],"phrases":["cutting edge","game-changing","game changer","next generation","scalable solution","solutions provider","ecosystem play","ai-powered platform","one-stop shop","unlock the power","transform the way","end-to-end solution","best of breed"],"mission":["our mission","our vision","we are passionate","we're passionate","we believe in a world","on a mission to","our purpose","we envision","we dream of","our north star"]};
+  var box=document.getElementById('ol'), out=document.getElementById('olout'), count=document.getElementById('olcount');
+  var CAP=50;
+  function esc(s){ return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+  function check(){
+    var t=box.value.trim(), n=t.length;
+    count.textContent = n + ' / ' + CAP;
+    count.className = n>CAP ? 'count over' : (n>CAP-8 ? 'count near' : 'count');
+    if(!n){ out.innerHTML='<p class="muted">Type your one-liner above.</p>'; return; }
+
+    var f=[];
+    if(n>CAP) f.push(['red','Over the limit by '+(n-CAP)+' characters','The form will not accept it. Cut the words that describe how it feels and keep the ones that say what it is.']);
+
+    var low=t.toLowerCase(), found=[];
+    L.stems.forEach(function(s){ var m=low.match(new RegExp('\\b'+s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*')); if(m) found.push(m[0]); });
+    L.phrases.forEach(function(p){ if(low.indexOf(p)!==-1) found.push(p); });
+    if(found.length) f.push(['red','Buzzwords: '+found.slice(0,3).map(function(w){return '"'+w+'"';}).join(', '),'A partner skims past adjectives looking for what the thing actually is. Replace each one with the literal fact underneath it.']);
+
+    var miss=L.mission.filter(function(m){ return low.indexOf(m)!==-1; });
+    if(miss.length) f.push(['red','Mission statement, not a product','This question asks what the company does, not why it exists. Describe the thing a user touches.']);
+
+    // "Broker software for brokers" repeats across the "for", not next to it,
+    // so compare the two sides by stem rather than looking for adjacency.
+    var forAt = low.search(/\bfor\b/);
+    if(forAt !== -1){
+      var STOP={'a':1,'an':1,'the':1,'and':1,'of':1,'to':1,'your':1,'our':1,'for':1};
+      var stem=function(w){ return w.replace(/[^a-z]/g,'').replace(/(ing|ers|er|s)$/,''); };
+      var words=function(part){ return part.split(/\s+/).map(function(w){ return {raw:w.replace(/[^a-z]/g,''), s:stem(w)}; })
+        .filter(function(o){ return o.s.length>2 && !STOP[o.s]; }); };
+      var left=words(low.slice(0,forAt)), right=words(low.slice(forAt+3));
+      var hit=null;
+      left.forEach(function(l){ if(!hit) right.forEach(function(r){ if(!hit && l.s===r.s) hit=[l.raw,r.raw]; }); });
+      if(hit) f.push(['amber','It defines the thing by itself','"'+hit[0]+'" and "'+hit[1]+'" sit on either side of "for", which tells a reader nothing they did not already get from your company name.']);
+    }
+
+    var words=t.split(/\s+/).filter(Boolean);
+    if(words.length && words.length<3) f.push(['amber','Only '+words.length+' word'+(words.length===1?'':'s'),'There is not enough here to tell what the product is.']);
+
+    if(/\b(platform|solution|ecosystem|suite|framework)\b/i.test(t) && !/\bfor\b/i.test(t)) f.push(['amber','A category, not a product','Platform and solution are what people write instead of saying what the thing does.']);
+
+    if(!f.length){
+      out.innerHTML='<div class="fnd green"><b>Nothing wrong with it.</b> It fits the cap and it says something concrete. '+
+        'The full check reads this against your other 25 answers, which is where the harder problems live.</div>';
+      return;
+    }
+    out.innerHTML=f.map(function(x){
+      return '<div class="fnd '+x[0]+'"><b>'+esc(x[1])+'.</b> '+esc(x[2])+'</div>';
+    }).join('');
+  }
+  box.addEventListener('input', check);
+  [].forEach.call(document.querySelectorAll('.try'),function(b){
+    b.onclick=function(){ box.value=b.getAttribute('data-t'); check(); box.focus(); };
+  });
+  check();
+})();</script>
+
+</main>
+<footer class="site">
+  <p><a href="/batchize/">Batchize</a> checks every answer in your YC application against what that question is really asking, and cross-references your answers against each other. Free, no account, and nothing you write leaves your browser.</p>
+  <p class="fine">Batchize is not affiliated with Y Combinator. Question wording follows the public application form and may change; check the official form before you submit.</p>
+</footer>
+</body>
+</html>
