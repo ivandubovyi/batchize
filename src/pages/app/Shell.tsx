@@ -1,6 +1,10 @@
 import type { ReactNode } from "react";
+import { proVisible } from "@/lib/pro";
 import {
   ClipboardList,
+  FileCheck2,
+  Flame,
+  History,
   Gauge,
   LayoutDashboard,
   MessageCircle,
@@ -21,6 +25,13 @@ const TABS = [
   { hash: "#/app/partner", label: "Partner", icon: MessageCircle },
 ];
 
+/** Paid tabs, hidden entirely until Pro is on sale. */
+const PRO_TABS = [
+  { hash: "#/app/drafts", label: "Drafts", icon: History },
+  { hash: "#/app/grill", label: "Grill", icon: Flame },
+  { hash: "#/app/submit", label: "Submit", icon: FileCheck2 },
+];
+
 export function AppShell({
   route,
   children,
@@ -31,7 +42,7 @@ export function AppShell({
   return (
     <main className="mx-auto max-w-6xl px-4 pb-24 pt-24 md:px-6">
       <nav className="mb-8 flex gap-1 overflow-x-auto rounded-2xl border border-border bg-card p-1.5 shadow-sm">
-        {TABS.map((t) => {
+        {[...TABS, ...(proVisible() ? PRO_TABS : [])].map((t) => {
           const active = route === t.hash;
           return (
             <a

@@ -3,6 +3,7 @@
 // the escape hatch: a single JSON file you own.
 
 import { loadApp, saveApp, QUESTIONS, type AppData } from "./application";
+import { loadDrafts, saveDrafts, type Draft } from "./drafts";
 
 const FILE_VERSION = 1;
 
@@ -12,6 +13,11 @@ export interface BackupFile {
   exportedAt: string;
   app: AppData;
   quick?: Record<string, string>;
+  /**
+   * Pro draft history travels with the application. The licence key does not:
+   * it belongs to a person, not to a file.
+   */
+  drafts?: Draft[];
 }
 
 const QUICK_STORE = "batchize-quick";
@@ -30,6 +36,7 @@ export function buildBackup(): BackupFile {
     exportedAt: new Date().toISOString(),
     app: loadApp(),
     quick,
+    drafts: loadDrafts(),
   };
 }
 
@@ -55,6 +62,7 @@ export interface ImportSummary {
   answers: number;
   hadQuick: boolean;
   exportedAt?: string;
+  drafts: number;
 }
 
 /**
@@ -98,12 +106,19 @@ export function parseBackup(text: string): { file: BackupFile; summary: ImportSu
       app.chancing && typeof app.chancing === "object" ? app.chancing : {},
   };
 
+  const drafts = Array.isArray(f.drafts)
+    ? (f.drafts as Draft[]).filter(
+        (d) => d && typeof d.id === "string" && typeof d.answers === "object"
+      )
+    : [];
+
   return {
-    file: { ...(f as BackupFile), app: safe },
+    file: { ...(f as BackupFile), app: safe, drafts },
     summary: {
       answers: Object.keys(clean).length,
       hadQuick: Boolean(f.quick && Object.keys(f.quick).length),
       exportedAt: typeof f.exportedAt === "string" ? f.exportedAt : undefined,
+      drafts: drafts.length,
     },
   };
 }
@@ -113,6 +128,7 @@ export function applyBackup(file: BackupFile): void {
   if (file.quick && Object.keys(file.quick).length) {
     localStorage.setItem(QUICK_STORE, JSON.stringify(file.quick));
   }
+  if (file.drafts && file.drafts.length) saveDrafts(file.drafts);
 }
 
 export function readFileText(file: File): Promise<string> {

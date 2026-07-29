@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { proVisible } from "@/lib/pro";
 
 export function Nav() {
   return (
@@ -20,6 +21,14 @@ export function Nav() {
           >
             FAQ
           </a>
+          {proVisible() && (
+            <a
+              href="#/pricing"
+              className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:block"
+            >
+              Pricing
+            </a>
+          )}
           <Button asChild size="sm" className="rounded-full px-5">
             <a href="#/app">Get Started</a>
           </Button>

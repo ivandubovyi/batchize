@@ -27,10 +27,15 @@ export { scoreQuick } from "./src/lib/quickScore";
 export { coachReply } from "./src/lib/coach";
 export { narrativeCheck } from "./src/lib/rewrite";'
 
+bundle pro 'export { diffWords, summariseDiff, diffAnswers } from "./src/lib/drafts";
+export { buildPack, packToText } from "./src/lib/submission";
+export { buildGrill, summariseGrill } from "./src/lib/grill";
+export { exampleAppData, EXAMPLE_ANSWERS } from "./src/lib/example";'
+
 echo "--- bundles rebuilt ---"
 
 fail=0
-for suite in train train2 eval-analyzer eval-rewrite eval-quick eval-coach eval-example; do
+for suite in train train2 eval-analyzer eval-rewrite eval-quick eval-coach eval-example eval-pro; do
   echo ""
   echo "=== $suite ==="
   node "evals/$suite.mjs" || fail=1

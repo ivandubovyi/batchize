@@ -116,3 +116,29 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+/* The submission pack advertises "save as PDF", so printing has to produce a
+   clean document: no navigation, no footer, no dark theme burning a cartridge,
+   and no answer split across a page break. */
+@media print {
+  nav,
+  footer {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+  section,
+  .print-block {
+    break-inside: avoid;
+  }
+  a[href^="#"]::after {
+    content: "";
+  }
+}

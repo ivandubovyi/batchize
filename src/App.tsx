@@ -12,6 +12,10 @@ import { Interview } from "@/pages/app/Interview";
 import { Chancing } from "@/pages/app/Chancing";
 import { Tools } from "@/pages/app/Tools";
 import { Partner } from "@/pages/app/Partner";
+import { Drafts } from "@/pages/app/Drafts";
+import { Submit } from "@/pages/app/Submit";
+import { Grill } from "@/pages/app/Grill";
+import { Pricing } from "@/pages/Pricing";
 
 function parseHash(hash: string): { route: string; query: URLSearchParams } {
   const [path, qs] = hash.split("?");
@@ -59,10 +63,18 @@ export default function App() {
         <Tools />
       ) : route === "#/app/partner" ? (
         <Partner />
+      ) : route === "#/app/drafts" ? (
+        <Drafts />
+      ) : route === "#/app/submit" ? (
+        <Submit />
+      ) : route === "#/app/grill" ? (
+        <Grill />
       ) : (
         <Dashboard />
       );
     page = <AppShell route={route}>{sub}</AppShell>;
+  } else if (route === "#/pricing") {
+    page = <Pricing />;
   } else if (route === "#/review") {
     page = <Review />;
   } else {
