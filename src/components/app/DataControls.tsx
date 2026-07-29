@@ -89,6 +89,7 @@ export function DataControls({ onChanged }: { onChanged?: () => void }) {
         <input
           ref={fileRef}
           type="file"
+          aria-label="Choose a Batchize export file to import"
           accept="application/json,.json"
           className="hidden"
           onChange={(e) => {

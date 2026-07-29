@@ -6,12 +6,11 @@ Live at **https://ivandubovyi.github.io/batchize/**
 ## Redeploy after changes
 
 ```bash
-npm run build
+npm run build   # tsc, vite, then the 30 static content pages
 
 # push the built site to the gh-pages branch
 cd dist
-touch .nojekyll
-git init -q
+git init -q                # skip if dist/.git already exists
 git add -A
 git commit -m "Deploy"
 git branch -M gh-pages
@@ -22,6 +21,18 @@ cd ..
 # and the source to main
 git add -A && git commit -m "..." && git push origin main
 ```
+
+`npm run build` writes `.nojekyll` itself, so Pages does not run Jekyll over
+the output.
+
+**Do not use `npx gh-pages`.** It keeps a stale local cache and eventually
+fails every push with `non-fast-forward`, and none of the documented cleanup
+commands fix it. The git commands above are what actually works. `dist/.git/`
+is gitignored, so this leaves the source repo clean.
+
+Give the Pages CDN about a minute: a `curl` immediately after pushing will
+still return the previous build. Verify by checking the hashed asset name in
+the live HTML against the one in `dist/`.
 
 `vite.config.ts` sets `base: "/batchize/"` because Pages serves this from a
 subpath. If you move it to a custom domain or a root deploy (Netlify, Vercel,

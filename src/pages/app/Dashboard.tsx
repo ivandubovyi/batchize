@@ -118,6 +118,7 @@ export function Dashboard() {
           )}
           <Input
             type="date"
+            aria-label="Target batch deadline"
             className="mt-2"
             value={data.deadline ?? ""}
             onChange={(e) =>

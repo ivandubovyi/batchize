@@ -50,7 +50,7 @@ const FaqSection = () => {
       />
       <div>
         <p className="text-primary text-sm font-medium">FAQ's</p>
-        <h1 className="text-3xl font-semibold text-foreground">Looking for answers?</h1>
+        <h2 className="text-3xl font-semibold text-foreground">Looking for answers?</h2>
         <p className="text-sm text-muted-foreground mt-2 pb-4">
           Everything you might want to know before you paste your application
           in.
