@@ -108,7 +108,7 @@ export function oneLinerPage({ page, esc, BASE, SITE, QUESTIONS, BUZZ_STEMS, BUZ
 <p>The one-liner is the cheapest one to fix and the least likely to be why an application fails. The expensive problems are the ones between answers: a user count here that disagrees with a user count there, revenue claimed where you said you have no users. Those are invisible when you read your answers one at a time.</p>
 
 <a class="big-cta" href="${BASE}/#/app">Check all 26 answers, free</a>
-<p class="note">No account, no API key, nothing uploaded. The whole checker runs in your browser, like this tester.</p>
+<p class="note">No account needed, no API key, nothing uploaded unless you ask. The whole checker runs in your browser, like this tester.</p>
 
 <p><a href="${BASE}/questions/one-liner/">More on this question →</a> &nbsp; <a href="${BASE}/questions/">All 26 questions →</a> &nbsp; <a href="${BASE}/red-flags/">The red flags →</a></p>
 <script>${script}</script>

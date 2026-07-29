@@ -17,7 +17,7 @@ const FaqSection = () => {
     {
       question: "Is my application data uploaded anywhere?",
       answer:
-        "Nothing you type ever leaves your machine. There is no server and no account: your application is saved only in this browser, on this device. That also means clearing your browser data will delete it, and it will not follow you to another computer.",
+        "Nothing you type ever leaves your machine. There is no server and no account required: your application is saved in this browser, on this device, and only leaves it if you create an account and press Upload yourself. That also means clearing your browser data will delete it, and it will not follow you to another computer.",
     },
     {
       question: "How is this different from just proofreading it myself?",

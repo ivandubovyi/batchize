@@ -50,7 +50,7 @@ const FEATURES = [
   {
     icon: MessageCircle,
     title: "Batchize Partner",
-    body: "A coach that has read your saved application and answers with specifics from it: what your weakest answer is, what to fix first, how to tighten a specific answer, what partners will push on. Free and instant, with no account or key.",
+    body: "A coach that has read your saved application and answers with specifics from it: what your weakest answer is, what to fix first, how to tighten a specific answer, what partners will push on. Free and instant, with no account or key required.",
   },
   {
     icon: Wrench,

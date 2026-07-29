@@ -19,6 +19,7 @@ const Partner = lazy(() => import("@/pages/app/Partner").then((m) => ({ default:
 const Drafts = lazy(() => import("@/pages/app/Drafts").then((m) => ({ default: m.Drafts })));
 const Submit = lazy(() => import("@/pages/app/Submit").then((m) => ({ default: m.Submit })));
 const Grill = lazy(() => import("@/pages/app/Grill").then((m) => ({ default: m.Grill })));
+const Account = lazy(() => import("@/pages/app/Account").then((m) => ({ default: m.Account })));
 const Pricing = lazy(() => import("@/pages/Pricing").then((m) => ({ default: m.Pricing })));
 
 function parseHash(hash: string): { route: string; query: URLSearchParams } {
@@ -73,6 +74,8 @@ export default function App() {
         <Submit />
       ) : route === "#/app/grill" ? (
         <Grill />
+      ) : route === "#/app/account" ? (
+        <Account />
       ) : (
         <Dashboard />
       );

@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import { proVisible } from "@/lib/pro";
+import { SYNC_AVAILABLE } from "@/lib/supabaseClient";
 import {
   ClipboardList,
   FileCheck2,
   Flame,
   History,
+  UserRound,
   Gauge,
   LayoutDashboard,
   MessageCircle,
@@ -42,7 +44,13 @@ export function AppShell({
   return (
     <main className="mx-auto max-w-6xl px-4 pb-24 pt-24 md:px-6">
       <nav className="mb-8 flex gap-1 overflow-x-auto rounded-2xl border border-border bg-card p-1.5 shadow-sm">
-        {[...TABS, ...(proVisible() ? PRO_TABS : [])].map((t) => {
+        {[
+          ...TABS,
+          ...(proVisible() ? PRO_TABS : []),
+          ...(SYNC_AVAILABLE
+            ? [{ hash: "#/app/account", label: "Account", icon: UserRound }]
+            : []),
+        ].map((t) => {
           const active = route === t.hash;
           return (
             <a

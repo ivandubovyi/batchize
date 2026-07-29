@@ -32,10 +32,12 @@ export { buildPack, packToText } from "./src/lib/submission";
 export { buildGrill, summariseGrill } from "./src/lib/grill";
 export { exampleAppData, EXAMPLE_ANSWERS } from "./src/lib/example";'
 
+bundle sync 'export { fingerprint, describe } from "./src/lib/sync";'
+
 echo "--- bundles rebuilt ---"
 
 fail=0
-for suite in eval-source-integrity train train2 train3 eval-analyzer eval-rewrite eval-quick eval-coach eval-example eval-pro; do
+for suite in eval-source-integrity train train2 train3 eval-analyzer eval-rewrite eval-quick eval-coach eval-example eval-pro eval-sync; do
   echo ""
   echo "=== $suite ==="
   node "evals/$suite.mjs" || fail=1

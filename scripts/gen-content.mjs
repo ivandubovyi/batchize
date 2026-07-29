@@ -133,7 +133,7 @@ ${breadcrumb ? `<nav class="crumbs">${breadcrumb}</nav>` : ""}
 ${body}
 </main>
 <footer class="site">
-  <p><a href="${BASE}/">Batchize</a> checks every answer in your YC application against what that question is really asking, and cross-references your answers against each other. Free, no account, and nothing you write leaves your browser.</p>
+  <p><a href="${BASE}/">Batchize</a> checks every answer in your YC application against what that question is really asking, and cross-references your answers against each other. Free, no account needed, and nothing you write leaves your browser unless you turn on sync.</p>
   <p class="fine">Batchize is not affiliated with Y Combinator. Question wording follows the public application form and may change; check the official form before you submit.</p>
 </footer>
 </body>
@@ -233,7 +233,7 @@ ${UNIVERSAL.slice(0, 5)
   .join("\n")}
 
 <a class="big-cta" href="${BASE}/#/app/application?q=${esc(q.id)}">Write this answer and check it, free</a>
-<p class="note">No account, no API key, nothing uploaded. The whole checker runs in your browser.</p>
+<p class="note">No account needed, no API key, nothing uploaded unless you ask. The whole checker runs in your browser.</p>
 
 <h2>The other questions</h2>
 ${QUESTIONS.filter((x) => x.section === q.section && x.id !== q.id)
@@ -303,7 +303,7 @@ ${QUESTIONS.filter((q) => q.section === s.id)
 ${UNIVERSAL.map(([h, b]) => `<div class="card"><h3>${esc(h)}</h3><p>${esc(b)}</p></div>`).join("\n")}
 
 <a class="big-cta" href="${BASE}/#/app">Check your application, free</a>
-<p class="note">No account, no API key, nothing uploaded. The whole checker runs in your browser.</p>
+<p class="note">No account needed, no API key, nothing uploaded unless you ask. The whole checker runs in your browser.</p>
 `;
 
   return {
@@ -311,7 +311,7 @@ ${UNIVERSAL.map(([h, b]) => `<div class="card"><h3>${esc(h)}</h3><p>${esc(b)}</p
     url: canonical,
     html: page({
       title: `All ${QUESTIONS.length} YC application questions, explained`,
-      description: `Every question on the Y Combinator application with what each one is really asking and what a strong answer contains. Free checker, no account, runs in your browser.`,
+      description: `Every question on the Y Combinator application with what each one is really asking and what a strong answer contains. Free checker, no account needed, runs in your browser.`,
       canonical,
       body,
       breadcrumb: `<a href="${BASE}/">Batchize</a> / Application questions`,
@@ -351,7 +351,7 @@ ${ambers.map(card).join("\n")}
 <p>Reading your own answers one at a time is precisely how contradictions survive. A user count in one answer that disagrees with another, revenue claimed where you said you have no users, a launch date that does not match how long you say you have been building: each answer is fine alone and the pair is not. Batchize reads them against each other, which is what a partner does.</p>
 
 <a class="big-cta" href="${BASE}/#/app">Check your application against all ${CHECK_CATALOGUE.length}, free</a>
-<p class="note">No account, no API key, nothing uploaded. The whole checker runs in your browser.</p>
+<p class="note">No account needed, no API key, nothing uploaded unless you ask. The whole checker runs in your browser.</p>
 
 <h2>Where each one applies</h2>
 <p>Every check above runs on every answer. On top of them, each question has its own expectations. <a href="${BASE}/questions/">See all ${QUESTIONS.length} questions →</a></p>
@@ -402,7 +402,7 @@ ${QUESTION_BANK.filter((q) => q.cat === c.id)
 <p>A fixed list like this one cannot ask you about the number in your progress answer that disagrees with the number in your traction answer. Those follow-ups are the ones that actually catch people, and they are generated from what you wrote, not from a bank.</p>
 
 <a class="big-cta" href="${BASE}/#/app/interview">Drill these against your own application, free</a>
-<p class="note">No account, no API key, nothing uploaded. The whole thing runs in your browser.</p>
+<p class="note">No account needed, no API key, nothing uploaded unless you ask. The whole thing runs in your browser.</p>
 
 <p><a href="${BASE}/questions/">All ${QUESTIONS.length} application questions →</a> &nbsp; <a href="${BASE}/red-flags/">The full list of red flags →</a></p>
 `;
@@ -462,7 +462,7 @@ ${shown
 <p>Not 100, deliberately. The example is checked by the same engine as your application on every build, and it is a strong application rather than a perfect one, because a perfect example teaches a standard nobody meets. You can load it into the tool in one click and see exactly what it still gets marked down for.</p>
 
 <a class="big-cta" href="${BASE}/#/app">Load the example, then write your own</a>
-<p class="note">No account, no API key, nothing uploaded. The whole checker runs in your browser.</p>
+<p class="note">No account needed, no API key, nothing uploaded unless you ask. The whole checker runs in your browser.</p>
 
 <p><a href="${BASE}/questions/">All ${QUESTIONS.length} application questions →</a> &nbsp; <a href="${BASE}/red-flags/">The full list of red flags →</a></p>
 `;
@@ -544,7 +544,7 @@ function safeCalculatorPage() {
 <p>A cap table with too much sold too early is a real reason applications stall, because it limits who can lead your next round and how much room is left for the people you have not hired yet. It is worth knowing the number before someone else works it out in front of you.</p>
 
 <a class="big-cta" href="${BASE}/#/app">Check your whole YC application, free</a>
-<p class="note">No account, no API key, nothing uploaded. Runs entirely in your browser, like this calculator.</p>
+<p class="note">No account needed, no API key, nothing uploaded unless you ask. Runs entirely in your browser, like this calculator.</p>
 
 <p><a href="${BASE}/questions/">All ${QUESTIONS.length} application questions →</a> &nbsp; <a href="${BASE}/red-flags/">The red flags →</a></p>
 <script>${script}</script>

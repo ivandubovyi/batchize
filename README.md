@@ -1,8 +1,9 @@
 # Batchize
 
 **A red-flag check for Y Combinator applications that runs entirely in your
-browser.** No account, no API key, no server, no upload. Your application is
-saved to local storage on your own machine and nothing you type leaves it.
+browser.** No account needed, no API key, no upload. Your application is saved
+to local storage on your own machine and only leaves it if you create an
+account and press Upload yourself.
 
 → **[ivandubovyi.github.io/batchize](https://ivandubovyi.github.io/batchize/)**
 
@@ -42,10 +43,12 @@ against a labelled corpus:
 ```
 evals/corpus.mjs    26 signals that MUST fire, 29 that must NOT
 evals/corpus2.mjs   adversarial cases: 10 hard positives, 8 hard negatives
+evals/corpus3.mjs   precision first: mostly writing that must NOT be flagged
 ```
 
-Current: **100% recall, 100% specificity** on both. Eight suites in total, all
-run by one command:
+Current: **100% recall, 100% specificity** on both, plus a third tier that
+tests precision under pressure at 7/7 and 25/25. Ten suites in total, all run
+by one command:
 
 ```bash
 sh evals/build.sh
@@ -79,6 +82,7 @@ with regression cases.
 | **Chancing** | A transparent readiness score. Explicitly not a prediction |
 | **Tools** | SAFE dilution, runway, equity split, one-liner tester |
 | **Export / import** | A JSON file you own, so clearing site data does not lose the work |
+| **Account and sync** | Optional. Carries your application between machines. Off by default, and the app is fully usable having never signed in |
 
 Three paid features exist behind a licence check ([`SELLING.md`](SELLING.md)):
 draft history with word-level diffs, a printable submission pack, and a partner
@@ -98,10 +102,26 @@ A key can be shared, because there is nothing to phone home to. That is the same
 property that means nothing you write is uploaded, and the pricing page states
 it rather than pretending otherwise.
 
+## Accounts
+
+Optional, and structured so the privacy claim survives them: the browser copy
+is the truth and the cloud is a copy of it, never the other way round. Nothing
+is uploaded until somebody presses Upload.
+
+Postgres on Supabase, one row per user, behind row level security keyed to
+`auth.uid()`. Verified against the live project with two real accounts that a
+second user cannot list, select by id, or overwrite another user's row. See
+[`SUPABASE.md`](SUPABASE.md), including the two rough edges (no email
+verification, weak password reset) and the twenty-minute SMTP fix for both.
+
+Conflicts are never merged automatically. Stitching two versions of an answer
+somebody rewrote six times produces a sentence neither version said, so it
+asks.
+
 ## Static content
 
 The app is hash-routed, which is fine for the product and invisible to
-crawlers. [`scripts/gen-content.mjs`](scripts/gen-content.mjs) generates 28
+crawlers. [`scripts/gen-content.mjs`](scripts/gen-content.mjs) generates 32
 static pages at build time from the same data the app uses: every question with
 what it is really asking, and the full catalogue of red flags with the exact
 words each one catches. Nothing is written twice, so adding a buzzword to the
@@ -113,7 +133,7 @@ lexicon changes the published page on the next build.
 npm install
 npm run dev       # http://localhost:4690
 npm run build     # tsc, vite, then the static content pages
-sh evals/build.sh # rebuild every eval bundle and run all eight suites
+sh evals/build.sh # rebuild every eval bundle and run all ten suites
 npm run traffic   # GitHub repo traffic (not site visits, see DEPLOY.md)
 ```
 
@@ -133,6 +153,9 @@ from a subpath.
 - The worked example is labelled fictional in the file header and in the UI.
 - Where something does not work, it says so instead of hiding. The site has no
   visitor analytics at all, and `DEPLOY.md` says that plainly rather than
-  implying otherwise.
+  implying otherwise. The sign-up screen states that emails are unverified and
+  that password reset barely works, rather than letting somebody find out.
+- Adding accounts made "nothing leaves your browser" conditional, so every
+  place that claimed it now says "unless you turn on sync" instead.
 - The chancing score is called a heuristic, not a prediction, because that is
   what it is.

@@ -2,9 +2,9 @@
 // of a check as an image a founder can post.
 //
 // It contains the score, the four dimension readings, and the counts. It
-// contains none of the answers, deliberately: the entire promise of the
-// product is that what you write stays on your machine, and a share button
-// that quietly leaks a sentence of your traction would break it.
+// contains none of the answers, deliberately: what you write stays on your
+// machine unless you deliberately sync it, and a share button that quietly
+// leaked a sentence of your traction would make that promise worthless.
 
 import type { FullAudit } from "./analyzer";
 
@@ -185,7 +185,7 @@ export function renderShareCard(audit: FullAudit): HTMLCanvasElement {
 
   ctx.textAlign = "right";
   ctx.font = FONT(500, 19);
-  ctx.fillText("No account. Nothing uploaded.", W - 76, H - 54);
+  ctx.fillText("No account needed. Nothing uploaded.", W - 76, H - 54);
   ctx.textAlign = "left";
 
   return canvas;
@@ -195,7 +195,7 @@ export function renderShareCard(audit: FullAudit): HTMLCanvasElement {
 export function shareText(audit: FullAudit): string {
   return `My YC application scored ${audit.total}/100 on Batchize: ${audit.reds} red ${
     audit.reds === 1 ? "flag" : "flags"
-  }, ${audit.ambers} to tighten. It checks every answer against what the question is really asking, and against your other answers. Free, no account, nothing uploaded: ivandubovyi.github.io/batchize`;
+  }, ${audit.ambers} to tighten. It checks every answer against what the question is really asking, and against your other answers. Free, no account needed, nothing uploaded unless you ask: ivandubovyi.github.io/batchize`;
 }
 
 export function downloadShareCard(audit: FullAudit): Promise<void> {

@@ -13,8 +13,8 @@ const POINTS = [
   },
   {
     icon: WifiOff,
-    title: "It has no server to depend on",
-    body: "The whole engine runs in your browser. That means no account, no key, no bill, no rate limit, and nothing you write is uploaded anywhere, including the thing you are least likely to want sitting on someone else's server: the honest version of your traction.",
+    title: "It does not depend on a server",
+    body: "The whole engine runs in your browser. That means no account, no key, no bill and no rate limit, and nothing you write is uploaded anywhere unless you create an account and press Upload. That includes the thing you are least likely to want sitting on someone else's server: the honest version of your traction.",
   },
 ];
 

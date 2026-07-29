@@ -159,10 +159,10 @@ export function Pricing() {
         <h2 className="text-2xl font-bold">Things worth knowing before you pay</h2>
         <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
           <p>
-            <b className="text-foreground">There is no account.</b> Buying gives
+            <b className="text-foreground">Pro needs no account.</b> Buying gives
             you a key you paste into the browser. That key is checked against a
-            signature compiled into the page, so unlocking works offline and
-            your application still never leaves your machine.
+            signature compiled into the page, so unlocking works offline and no
+            request is made to unlock it.
           </p>
           <p>
             <b className="text-foreground">A key can be shared.</b> There is no

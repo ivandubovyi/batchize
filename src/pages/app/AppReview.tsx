@@ -117,7 +117,7 @@ export function AppReview() {
         <p className="mt-1 text-muted-foreground">
           Every one of your {answered} answers checked against what that
           question is really asking, plus contradictions across the whole
-          application. No API key, no sign-up, nothing uploaded.
+          application. No API key, no sign-up, nothing uploaded unless you ask.
         </p>
       </header>
 

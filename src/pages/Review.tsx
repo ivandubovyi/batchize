@@ -68,7 +68,7 @@ export function Review() {
         </h1>
         <p className="mt-4 text-muted-foreground">
           The four answers partners read first, checked instantly. No API key,
-          no sign-up, nothing uploaded. For all 26 questions plus interview
+          no sign-up, nothing uploaded unless you ask. For all 26 questions plus interview
           prep, open the{" "}
           <a href="#/app" className="font-semibold text-primary underline">
             full app

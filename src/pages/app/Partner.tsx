@@ -107,7 +107,7 @@ export function Partner() {
 
       <p className="mt-3 text-xs text-muted-foreground">
         Answers come from the same engine as the Full check, reading the
-        application saved in this browser. Nothing is uploaded, no account or
+        application saved in this browser. Nothing is uploaded, no account needed or
         key is needed, and it never invents facts about your company.
       </p>
     </div>

@@ -27,7 +27,7 @@ export function Landing() {
   return (
     <main>
       <AnimatedMarqueeHero
-        tagline="Free. No account. Nothing leaves your browser."
+        tagline="Free. No account needed. Nothing is uploaded unless you ask."
         title={
           <>
             YC Applications,
@@ -35,7 +35,7 @@ export function Landing() {
             Finally Within Reach
           </>
         }
-        description="Batchize reads your whole application the way a partner does: every answer against what that question is really asking, and every answer against the others. It quotes the exact words that will cost you. Free, no account, nothing uploaded."
+        description="Batchize reads your whole application the way a partner does: every answer against what that question is really asking, and every answer against the others. It quotes the exact words that will cost you. Free, no account needed, and nothing is uploaded unless you turn on sync."
         ctaText="I'm Ready"
         images={HERO_IMAGES}
         onCtaClick={goToReview}

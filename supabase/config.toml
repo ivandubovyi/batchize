@@ -1,0 +1,39 @@
+project_id = "bqgknxlnoptnpjxucsfx"
+
+[auth]
+site_url = "https://ivandubovyi.github.io/batchize/"
+additional_redirect_urls = [
+  "https://ivandubovyi.github.io/batchize/",
+  "http://localhost:4690",
+]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = true
+# Turned OFF deliberately, and the sign-up screen says so.
+#
+# Supabase's built-in mail sender is rate limited to a couple of messages an
+# hour, which is fine for a hobby project and useless for a launch: the third
+# person to sign up in an hour would simply never receive their link and would
+# assume the product was broken.
+#
+# The cost of turning it off is that an address is never proved to belong to
+# the person using it. That is tolerable here because an account does exactly
+# one thing, hold a copy of your own drafts, and row level security keys
+# everything to the user id rather than the address. It is not tolerable
+# forever: see SUPABASE.md for the SMTP setup that lets this be turned back on.
+enable_confirmations = false
+double_confirm_changes = true
+secure_password_change = true
+max_frequency = "60s"
+
+[auth.email.template]
+# Left at the defaults. Custom templates need a verified sender to be worth
+# anything, so they belong with the SMTP step, not before it.
+
+# [auth.sessions] timebox / inactivity_timeout are Pro-plan only (the API
+# returns 402 on the free tier), so session lifetime stays at the default.
