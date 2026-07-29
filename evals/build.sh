@@ -35,7 +35,7 @@ export { exampleAppData, EXAMPLE_ANSWERS } from "./src/lib/example";'
 echo "--- bundles rebuilt ---"
 
 fail=0
-for suite in train train2 eval-analyzer eval-rewrite eval-quick eval-coach eval-example eval-pro; do
+for suite in eval-source-integrity train train2 train3 eval-analyzer eval-rewrite eval-quick eval-coach eval-example eval-pro; do
   echo ""
   echo "=== $suite ==="
   node "evals/$suite.mjs" || fail=1

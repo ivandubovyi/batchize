@@ -1,0 +1,14 @@
+{
+  "name": "Batchize: YC application checker",
+  "short_name": "Batchize",
+  "description": "Checks every answer in your YC application against what that question is really asking, and against your other answers. Runs entirely in your browser.",
+  "start_url": "/batchize/",
+  "scope": "/batchize/",
+  "display": "standalone",
+  "background_color": "#FDFBF7",
+  "theme_color": "#F0741F",
+  "icons": [
+    { "src": "/batchize/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/batchize/og.png", "sizes": "1200x630", "type": "image/png" }
+  ]
+}

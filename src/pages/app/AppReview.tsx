@@ -6,6 +6,7 @@ import { Card, Donut, ScoreBar } from "@/components/app/shared";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ShieldCheck } from "lucide-react";
 import { ShareResult } from "@/components/app/ShareResult";
+import { reportUrl } from "@/lib/feedback";
 
 const SEV_STYLES: Record<string, string> = {
   red: "border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950/40",
@@ -14,7 +15,15 @@ const SEV_STYLES: Record<string, string> = {
 };
 const SEV_ICONS: Record<string, string> = { red: "🚩", amber: "⚠️", green: "✅" };
 
-function FindingCard({ f, href }: { f: Finding; href?: string }) {
+function FindingCard({
+  f,
+  href,
+  questionLabel,
+}: {
+  f: Finding;
+  href?: string;
+  questionLabel?: string;
+}) {
   return (
     <div
       className={`rounded-xl border p-3 text-sm leading-relaxed ${SEV_STYLES[f.sev]}`}
@@ -30,14 +39,24 @@ function FindingCard({ f, href }: { f: Finding; href?: string }) {
               {f.evidence}
             </p>
           )}
-          {href && (
-            <a
-              href={href}
-              className="mt-1.5 inline-block text-xs font-semibold text-primary underline"
-            >
-              Fix this answer
-            </a>
-          )}
+          <div className="mt-1.5 flex flex-wrap items-center gap-3">
+            {href && (
+              <a href={href} className="text-xs font-semibold text-primary underline">
+                Fix this answer
+              </a>
+            )}
+            {f.sev !== "green" && (
+              <a
+                href={reportUrl({ title: f.title, questionLabel })}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Opens a prefilled GitHub issue. It carries the finding, never your answer."
+                className="text-xs text-muted-foreground underline decoration-dotted hover:text-foreground"
+              >
+                This flag is wrong
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -152,6 +171,7 @@ export function AppReview() {
                 </p>
                 <FindingCard
                   f={p.finding}
+                  questionLabel={p.label}
                   href={
                     p.questionId
                       ? `#/app/application?focus=${p.questionId}`

@@ -172,6 +172,17 @@ li{margin:.45em 0}
 .big-cta{display:block;background:var(--pri);color:#fff;text-decoration:none;font-weight:700;text-align:center;padding:16px;border-radius:14px;margin:32px 0 8px}
 .note{font-size:14px;text-align:center;color:var(--mut)}
 .ex{font-size:14px;margin-top:10px}
+.row{display:flex;gap:8px;margin-bottom:8px}
+.row input{flex:1;min-width:0;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px}
+.row input:focus{outline:2px solid var(--pri);outline-offset:1px}
+.row .rm{width:40px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--mut);font-size:19px;cursor:pointer}
+.ghost{border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--fg);font:inherit;font-weight:600;font-size:14px;padding:9px 16px;cursor:pointer}
+.out{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.out ul{margin:0 0 10px;padding-left:20px}
+.out li{color:var(--mut);font-size:15px}
+.out .big{font-size:19px;color:var(--fg);margin:6px 0}
+.out .muted{font-size:14px;color:var(--mut)}
+.out .warn{margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(240,116,31,.12);color:var(--fg);font-size:14px}
 code{background:rgba(240,116,31,.1);color:var(--pri);border-radius:5px;padding:2px 7px;font-size:13px;font-family:ui-monospace,Menlo,monospace;display:inline-block;margin:2px 1px}
 `;
 
@@ -452,6 +463,90 @@ ${shown
   };
 }
 
+
+function safeCalculatorPage() {
+  const canonical = `${SITE}/safe-calculator/`;
+
+  // Self-contained so the page is useful the second it loads from a search
+  // result. Someone looking up SAFE dilution wants the number, not a tour of
+  // an application checker, and a calculator you cannot use is a bounce.
+  const script = `
+(function(){
+  var rows=document.getElementById('rows'), out=document.getElementById('out');
+  function num(v){ v=String(v).replace(/[$,\\s]/g,''); var n=parseFloat(v); return isFinite(n)&&n>0?n:0; }
+  function addRow(){
+    var d=document.createElement('div'); d.className='row';
+    d.innerHTML='<input placeholder="Investment ($)" inputmode="decimal" aria-label="Investment amount in dollars">'+
+                '<input placeholder="Post-money cap ($)" inputmode="decimal" aria-label="Post-money valuation cap in dollars">'+
+                '<button type="button" class="rm" aria-label="Remove this SAFE">&times;</button>';
+    d.querySelector('.rm').onclick=function(){ if(rows.children.length>1){ d.remove(); calc(); } };
+    d.addEventListener('input', calc);
+    rows.appendChild(d);
+  }
+  function calc(){
+    var sold=0, lines=[], any=false;
+    [].forEach.call(rows.children,function(r){
+      var i=r.querySelectorAll('input'), amt=num(i[0].value), cap=num(i[1].value);
+      if(amt&&cap){ any=true; var pct=amt/cap; sold+=pct;
+        lines.push('$'+amt.toLocaleString()+' at a $'+cap.toLocaleString()+' cap sells <b>'+(pct*100).toFixed(2)+'%</b>'); }
+    });
+    if(!any){ out.innerHTML='<p class="muted">Enter an investment and a cap to see the dilution.</p>'; return; }
+    var kept=(1-sold)*100;
+    out.innerHTML='<ul>'+lines.map(function(l){return '<li>'+l+'</li>';}).join('')+'</ul>'+
+      '<p class="big">These SAFEs sell <b>'+(sold*100).toFixed(2)+'%</b> of the company.</p>'+
+      '<p class="muted">Founders and existing holders keep '+kept.toFixed(2)+'% between them, before any option pool and before the priced round itself dilutes everyone further.</p>'+
+      (sold>0.25?'<p class="warn">That is over 25% sold before a priced round. Partners read a cap table like this as a sign the early rounds were raised on bad terms, and it narrows who can lead the next one.</p>':'');
+  }
+  document.getElementById('add').onclick=function(){ addRow(); };
+  addRow(); calc();
+})();`;
+
+  const body = `
+<h1>Post-money SAFE dilution calculator</h1>
+<p class="lead">How much of your company each SAFE actually sells. Enter the investment and the post-money valuation cap; the arithmetic is the standard post-money formula.</p>
+
+<div class="card">
+  <div id="rows"></div>
+  <button type="button" id="add" class="ghost">Add another SAFE</button>
+  <div id="out" class="out"><p class="muted">Enter an investment and a cap to see the dilution.</p></div>
+</div>
+
+<h2>The formula</h2>
+<p>On a post-money SAFE, the investor's percentage is fixed at the moment they sign: <b>investment divided by the post-money valuation cap</b>. A $500,000 SAFE at a $10,000,000 cap sells exactly 5%, and it stays 5% no matter what happens between then and the priced round.</p>
+<p>This is what changed when YC moved from pre-money to post-money SAFEs in 2018. On the older pre-money form the investor's final percentage depended on how much you raised afterwards, so founders could not know their own dilution until the round closed. On the post-money form, every SAFE you sign dilutes the founders and the earlier SAFE holders, and never the later ones.</p>
+
+<h2>What this deliberately leaves out</h2>
+<ul>
+<li><b>Discounts.</b> Many SAFEs carry a discount as well as a cap, and the investor takes whichever is better for them. If yours has one, your real dilution is at least this much and possibly more.</li>
+<li><b>The option pool.</b> A priced round usually creates or tops up a pool, and it usually comes out of the pre-money, meaning out of the founders.</li>
+<li><b>The priced round itself.</b> The new money dilutes everyone, including every SAFE holder above.</li>
+</ul>
+<p>So treat the number above as a floor on your dilution, not a forecast. This is arithmetic, not advice, and it is not a substitute for a lawyer reading your actual documents.</p>
+
+<h2>Why partners look at this</h2>
+<p>A cap table with too much sold too early is a real reason applications stall, because it limits who can lead your next round and how much room is left for the people you have not hired yet. It is worth knowing the number before someone else works it out in front of you.</p>
+
+<a class="big-cta" href="${BASE}/#/app">Check your whole YC application, free</a>
+<p class="note">No account, no API key, nothing uploaded. Runs entirely in your browser, like this calculator.</p>
+
+<p><a href="${BASE}/questions/">All ${QUESTIONS.length} application questions →</a> &nbsp; <a href="${BASE}/red-flags/">The red flags →</a></p>
+<script>${script}</script>
+`;
+
+  return {
+    path: "safe-calculator/index.html",
+    url: canonical,
+    html: page({
+      title: "Post-money SAFE dilution calculator",
+      description:
+        "Work out how much of your company each post-money SAFE sells. Free, instant, no signup, and it says plainly what it leaves out: discounts, option pool, and the priced round.",
+      canonical,
+      body,
+      breadcrumb: `<a href="${BASE}/">Batchize</a> / SAFE calculator`,
+    }),
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Write
 // ---------------------------------------------------------------------------
@@ -461,6 +556,7 @@ const pages = [
   redFlagsPage(),
   interviewPage(),
   examplePage(),
+  safeCalculatorPage(),
   ...QUESTIONS.map(questionPage),
 ];
 

@@ -87,7 +87,7 @@ const SUPERLATIVES = [
  * disproof. Ordinary counting ("the first three hires") is not.
  */
 const PRIMACY_CLAIM =
-  /the first\s+(?:\w+\s+){0,2}(?:company|product|platform|tool|startup|service|team|app)|the first to|first ever/i;
+  /\bthe first\s+(?:\w+\s+){0,2}(?:company|product|platform|tool|startup|service|team|app)\b|\bthe first to\b|\bfirst ever\b/i;
 
 /**
  * A first-person past-tense action ("I drove", "we shipped", "I have spent")
@@ -199,9 +199,49 @@ function stemHits(text: string, stems: string[]): string[] {
   return out;
 }
 
+/**
+ * Some buzzword stems have a perfectly literal meaning. "A bad ELD update
+ * would disrupt the day's routing" is a founder describing an outage, and
+ * "their innovation budget goes to compliance" is a founder describing a
+ * competitor. Flagging either sends someone off rewriting a correct sentence.
+ *
+ * The distinguishing feature is who the subject is: startup-speak is a claim
+ * the founder makes about their own company.
+ */
+const SELF_CLAIM_STEMS = new Set(["disrupt", "innovat", "leverag", "empower", "reimagin"]);
+
+/** Third-party possessives: the sentence is about somebody else. */
+const THIRD_PARTY = /\b(their|its|his|her|the incumbents?'?|competitors?'?)\s*$/i;
+
+/** The founder's own company as the actor, anywhere earlier in the sentence. */
+const SELF_AGENT =
+  /\b(we|we're|we are|our|us|the (?:platform|product|app|tool|company|startup)|batchize)\b/i;
+
+/** The sentence containing a match, so context can be judged. */
+function sentenceWith(text: string, index: number): string {
+  const before = text.lastIndexOf(".", index);
+  const after = text.indexOf(".", index);
+  return text.slice(before + 1, after === -1 ? text.length : after);
+}
+
 /** Every buzzword in the text, stems and phrases together. */
 function buzzHits(text: string): string[] {
-  return [...new Set([...stemHits(text, BUZZ_STEMS), ...hits(text, BUZZ_PHRASES)])];
+  const stems: string[] = [];
+  for (const stem of BUZZ_STEMS) {
+    const re = new RegExp("\\b" + escapeRe(stem) + "\\w*", "i");
+    const m = re.exec(text);
+    if (!m) continue;
+    if (SELF_CLAIM_STEMS.has(stem)) {
+      const sentence = sentenceWith(text, m.index);
+      const upTo = text.slice(0, m.index);
+      // "their innovation budget" is about a competitor, not a claim.
+      if (THIRD_PARTY.test(upTo)) continue;
+      // No self-reference in this sentence means it is not a self-claim.
+      if (!SELF_AGENT.test(sentence)) continue;
+    }
+    stems.push(m[0].toLowerCase());
+  }
+  return [...new Set([...stems, ...hits(text, BUZZ_PHRASES)])];
 }
 
 const hasDigit = (t: string) => /\d/.test(t);
@@ -315,7 +355,7 @@ export const EXPECT: Record<string, Expectation> = {
   legal_entity: { minWords: 4, factual: true, wants: "the entity, plainly" },
   equity_split: { minWords: 4, factual: true, wantsPercent: true, wants: "the split, plainly, with reasoning" },
   investment: { minWords: 3, factual: true, wants: "amounts and terms, or an honest none" },
-  fundraising: { minWords: 2, factual: true, wants: "yes or no" },
+  fundraising: { factual: true, wants: "yes or no" },
   other_ideas: { wants: "one or two alternatives" },
   other_accelerators: { wants: "a straight answer" },
   how_heard: { wants: "one sentence" },
@@ -747,7 +787,11 @@ function countedPairs(text: string): Map<string, Set<string>> {
   for (const raw of sentences(text)) {
     if (!isComparableCount(raw)) continue;
     // "0:24 Brokers do this today" is a video timestamp, not 24 brokers.
-    const sent = raw.replace(/\b\d{1,2}:\d{2}\b/g, " ");
+    // "from 12 paying brokers in April to 23" states growth, so the first
+    // number is where you were, not a competing claim about where you are.
+    const sent = raw
+      .replace(/\b\d{1,2}:\d{2}\b/g, " ")
+      .replace(/\b(?:up\s+)?from\s+\$?[\d,.]+/gi, " ");
     for (const m of sent.matchAll(re)) {
       const noun = m[2].toLowerCase();
       const num = m[1].toLowerCase().replace(/[,\s]/g, "");
@@ -809,7 +853,12 @@ export function crossChecks(data: AppData): Finding[] {
   const users = (data.answers["users"] ?? "").trim();
   const revenue = (data.answers["revenue"] ?? "").trim();
   const revenueHasMoney = /\$\s?\d|\d+\s*(k|m)\b|mrr|arr/i.test(revenue);
-  const usersZero = /^\s*(no|none|zero|0|not yet)\b/i.test(users);
+  // Anchoring this to the start of the answer missed the way people actually
+  // write it: "We have no users yet" is the commonest phrasing of zero.
+  const usersZero =
+    /^\s*(no|none|zero|0|not yet)\b/i.test(users) ||
+    /\bno\s+(?:paying\s+)?(?:users?|customers?|clients?)\b/i.test(users) ||
+    /\bnone\s+yet\b/i.test(users);
   if (revenueHasMoney && usersZero) {
     findings.push({
       sev: "red",
