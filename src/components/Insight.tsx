@@ -52,6 +52,22 @@ export function Insight() {
         ))}
       </div>
 
+      <a
+        href={`${import.meta.env.BASE_URL}questions/`}
+        className="mt-8 flex flex-col items-center justify-between gap-3 rounded-2xl border border-border bg-accent/40 p-6 transition-colors hover:bg-accent sm:flex-row"
+      >
+        <span>
+          <span className="block font-semibold">
+            All 26 questions, and what each one is really asking
+          </span>
+          <span className="block text-sm text-muted-foreground">
+            What a strong answer contains, question by question. Free to read,
+            nothing to sign up for.
+          </span>
+        </span>
+        <span className="shrink-0 text-sm font-semibold text-primary">Read it →</span>
+      </a>
+
       <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground">
         The checks are tuned against a labelled corpus of realistic answers and
         measured on both what they catch and what they wrongly flag, because a

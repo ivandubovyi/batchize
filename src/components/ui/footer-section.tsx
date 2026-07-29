@@ -33,6 +33,12 @@ function Footerdemo({ isDarkMode, onToggleDarkMode }: FooterProps) {
               <a href="#faq" className="block transition-colors hover:text-primary">
                 FAQ
               </a>
+              <a
+                href={`${import.meta.env.BASE_URL}questions/`}
+                className="block transition-colors hover:text-primary"
+              >
+                All 26 questions, explained
+              </a>
               <a href="#/app" className="block transition-colors hover:text-primary">                Open the App
               </a>
             </nav>

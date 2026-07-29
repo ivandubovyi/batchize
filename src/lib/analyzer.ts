@@ -269,7 +269,7 @@ const list = (xs: string[], n = 3) =>
 // Per-question expectations: what a good answer to THIS question contains.
 // ---------------------------------------------------------------------------
 
-interface Expectation {
+export interface Expectation {
   /** Minimum useful length in words. */
   minWords?: number;
   /** Hard character cap enforced by the application itself. */
@@ -292,7 +292,7 @@ interface Expectation {
   wants: string;
 }
 
-const EXPECT: Record<string, Expectation> = {
+export const EXPECT: Record<string, Expectation> = {
   video_script: { minWords: 15, wants: "who you are, one plain sentence on the product, your sharpest number" },
   how_met: { minWords: 6, wantsDuration: true, wants: "how long you've known each other and what you've built together" },
   who_codes: { minWords: 4, wants: "which founder builds the product" },
