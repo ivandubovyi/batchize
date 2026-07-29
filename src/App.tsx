@@ -11,6 +11,7 @@ import { AppReview } from "@/pages/app/AppReview";
 import { Interview } from "@/pages/app/Interview";
 import { Chancing } from "@/pages/app/Chancing";
 import { Tools } from "@/pages/app/Tools";
+import { Partner } from "@/pages/app/Partner";
 
 function parseHash(hash: string): { route: string; query: URLSearchParams } {
   const [path, qs] = hash.split("?");
@@ -56,6 +57,8 @@ export default function App() {
         <Chancing />
       ) : route === "#/app/tools" ? (
         <Tools />
+      ) : route === "#/app/partner" ? (
+        <Partner />
       ) : (
         <Dashboard />
       );

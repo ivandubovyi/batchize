@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  MessageCircle,
   ClipboardList,
   Gauge,
   Mic,
@@ -45,6 +46,11 @@ const FEATURES = [
     icon: Gauge,
     title: "Chancing & accelerator list",
     body: "A transparent readiness score from the factors partners weigh, plus a balanced reach/target list of real accelerators. Labeled honestly: a heuristic, not a prediction.",
+  },
+  {
+    icon: MessageCircle,
+    title: "Batchize Partner",
+    body: "A coach that has read your saved application and answers with specifics from it: what your weakest answer is, what to fix first, how to tighten a specific answer, what partners will push on. Free and instant, with no account or key.",
   },
   {
     icon: Wrench,

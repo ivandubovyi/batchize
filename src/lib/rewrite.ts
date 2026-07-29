@@ -323,16 +323,42 @@ export function oneLinerIdeas(data: AppData): OneLinerIdea[] {
     }))
     .sort((a, b) => b.score - a.score);
 
-  // Audience: a plural noun naming people, never an acronym like TMS.
+  // Nouns that describe a person, so they belong on the "for whom" side of a
+  // one-liner rather than being sold as the product itself.
+  const PERSON_NOUNS = new Set([
+    "broker", "user", "customer", "client", "student", "teacher", "driver",
+    "founder", "manager", "developer", "engineer", "designer", "seller",
+    "buyer", "merchant", "patient", "doctor", "nurse", "recruiter", "agent",
+    "landlord", "tenant", "operator", "owner", "team", "shopper", "creator",
+    "freelancer", "accountant", "lawyer", "marketer", "analyst",
+  ]);
+  // Generic audiences lose to a domain-specific one when both exist.
+  const GENERIC_AUDIENCE = new Set(["user", "people", "team", "customer", "one"]);
+
+  const pluralize = (w: string) =>
+    w.endsWith("s") ? w : /(s|x|z|ch|sh)$/.test(w) ? w + "es" : w + "s";
+
+  const specificPlural = ranked.find(
+    (r) => r.plural && r.plural.length > 3 && !GENERIC_AUDIENCE.has(r.key)
+  )?.plural;
+  const anyPlural = ranked.find((r) => r.plural && r.plural.length > 3)?.plural;
+  // A person-noun in the description is a better audience than a generic one.
+  const personNoun = ranked.find((r) => PERSON_NOUNS.has(r.key) && !GENERIC_AUDIENCE.has(r.key));
+
   const audienceWord =
-    wordsOf(who).find((w) => w.endsWith("s") && w.length > 3 && !isAcronym(w)) ??
-    ranked.find((r) => r.plural && r.plural.length > 3)?.plural ??
+    wordsOf(who).find(
+      (w) => w.endsWith("s") && w.length > 3 && !isAcronym(w) && !GENERIC_AUDIENCE.has(stem(w))
+    ) ??
+    specificPlural ??
+    (personNoun ? pluralize(personNoun.word) : undefined) ??
+    anyPlural ??
     "teams";
   const audienceKey = stem(audienceWord);
 
-  // Concepts distinct from the audience, so we never emit "Broker for brokers".
+  // Concepts distinct from the audience, so we never emit "Broker for
+  // brokers". People are never the product, so they are excluded too.
   const concepts = ranked
-    .filter((r) => r.key !== audienceKey)
+    .filter((r) => r.key !== audienceKey && !PERSON_NOUNS.has(r.key))
     .map((r) => r.word);
   if (concepts.length === 0) return [];
 

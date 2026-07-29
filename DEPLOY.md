@@ -29,21 +29,19 @@ Cloudflare Pages), change `base` back to `"/"` or the assets will 404.
 
 Routing is hash-based (`#/app/...`), so no server rewrite rules are needed.
 
-## Hidden before launch
+## Every feature works, for free
 
-These are built and tested but hidden, because they need something most
-visitors do not have:
+Nothing on the site requires a key, an account, a server or a payment. The
+Partner coach (`src/lib/coach.ts`) answers from the same analysis engine the
+Full check uses, reading the application saved in the visitor's browser, so it
+works for 100% of visitors instantly and costs nothing to run.
 
-| Feature | Why hidden | Where |
-|---|---|---|
-| Batchize Partner (coach chat) | Requires an Anthropic key or a real browser-native model | `src/pages/app/Partner.tsx`, removed from `Shell.tsx` tabs and the `App.tsx` route |
-| Claude / on-device AI second opinion | Same | The card was removed from `src/pages/app/AppReview.tsx`; `aiReviewer.ts` and `localAiReviewer.ts` are untouched |
+`aiReviewer.ts` (Claude) and `localAiReviewer.ts` (browser-native model) are
+kept in the repo but are not wired into any screen, because both depend on
+something the visitor may not have. If you ever want them back, the honest way
+is a small backend holding **your** key with rate limiting.
 
-To bring them back, restore the nav entry and route, and re-add the AI card.
-The cleanest long-term fix is a small backend holding **your** key, so visitors
-get AI without needing one of their own.
-
-Also removed for launch: the newsletter form (never wired to a list), the
+Removed for launch: the newsletter form (never wired to a list), the
 placeholder social buttons, dead Privacy/Terms links, and the
 `support@batchize.ai` address, which does not exist.
 

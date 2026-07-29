@@ -3,6 +3,7 @@ import {
   ClipboardList,
   Gauge,
   LayoutDashboard,
+  MessageCircle,
   Mic,
   SearchCheck,
   Wrench,
@@ -17,6 +18,7 @@ const TABS = [
   { hash: "#/app/interview", label: "Interview", icon: Mic },
   { hash: "#/app/chancing", label: "Chancing", icon: Gauge },
   { hash: "#/app/tools", label: "Tools", icon: Wrench },
+  { hash: "#/app/partner", label: "Partner", icon: MessageCircle },
 ];
 
 export function AppShell({

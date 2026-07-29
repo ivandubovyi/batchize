@@ -12,7 +12,7 @@ const FaqSection = () => {
     {
       question: "Do I need an API key or an account?",
       answer:
-        "No. There is no sign-up, no key, and no server. Every check runs in your own browser the moment you open the Review tab, with no network request at all.",
+        "No, and not for any feature. Every part of the site, including the Partner coach, runs in your own browser with no sign-up, no key, no server and no network request. Nothing costs you anything and nothing can be rate-limited.",
     },
     {
       question: "Is my application data uploaded anywhere?",
