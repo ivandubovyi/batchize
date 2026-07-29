@@ -2,6 +2,7 @@ import { AnimatedMarqueeHero } from "@/components/ui/hero-3";
 import CTAWithVerticalMarquee from "@/components/ui/cta-with-text-marquee";
 import FaqSection from "@/components/ui/faq-sections";
 import { Features } from "@/components/Features";
+import { Insight } from "@/components/Insight";
 
 // Unsplash stock images for the hero marquee (startup / workspace themed)
 const HERO_IMAGES = [
@@ -26,7 +27,7 @@ export function Landing() {
   return (
     <main>
       <AnimatedMarqueeHero
-        tagline="Follows YC's official guidance on AI"
+        tagline="Free. No account. Nothing leaves your browser."
         title={
           <>
             YC Applications,
@@ -34,13 +35,15 @@ export function Landing() {
             Finally Within Reach
           </>
         }
-        description="Batchize scores your draft answers the way a partner reads them. Clarity, evidence, insight, ambition. It flags the invisible mistakes before you hit submit."
+        description="Batchize reads your whole application the way a partner does: every answer against what that question is really asking, and every answer against the others. It quotes the exact words that will cost you. Free, no account, nothing uploaded."
         ctaText="I'm Ready"
         images={HERO_IMAGES}
         onCtaClick={goToReview}
       />
 
       <Features />
+
+      <Insight />
 
       <CTAWithVerticalMarquee onPrimary={goToReview} onSecondary={goToFaq} />
 

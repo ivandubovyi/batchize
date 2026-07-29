@@ -77,10 +77,24 @@ const WEASEL = [
 ];
 
 const SUPERLATIVES = [
-  "the best", "the only", "first ever", "the first", "the largest",
+  "the best", "the only", "first ever", "the largest",
   "the leading", "world's best", "unrivaled", "unmatched", "perfect",
   "guaranteed", "never fails", "always works", "10x better", "100x",
 ];
+
+/**
+ * A primacy claim ("the first platform to do X") is a boast that invites
+ * disproof. Ordinary counting ("the first three hires") is not.
+ */
+const PRIMACY_CLAIM =
+  /the first\s+(?:\w+\s+){0,2}(?:company|product|platform|tool|startup|service|team|app)|the first to|first ever/i;
+
+/**
+ * A first-person past-tense action ("I drove", "we shipped", "I have spent")
+ * is lived experience even when it uses a verb no fixed list would contain.
+ */
+const FIRST_PERSON_ACTION =
+  /\b(?:i|we)\s+(?:have\s+|had\s+|also\s+|then\s+|once\s+|personally\s+)*[a-z]+(?:ed|t|ght|ew|an|ld|ok|ent|ade|aw)\b/i;
 
 const COMPARATIVES = [
   "faster", "better", "cheaper", "easier", "simpler", "more efficient",
@@ -416,6 +430,7 @@ export function auditAnswer(q: Question, raw: string): QuestionAudit {
 
   // --- superlatives without proof ---
   const supers = hits(text, SUPERLATIVES);
+  if (PRIMACY_CLAIM.test(text)) supers.push("the first");
   if (supers.length && !hasDigit(text)) {
     findings.push({
       sev: "amber",
@@ -616,7 +631,8 @@ export function auditAnswer(q: Question, raw: string): QuestionAudit {
   // --- founder-market fit ---
   if (exp.wantsPersonal) {
     const ins = hits(text, INSIGHT_MARKERS);
-    if (ins.length === 0) {
+    const personal = ins.length > 0 || FIRST_PERSON_ACTION.test(text);
+    if (!personal) {
       findings.push({
         sev: "amber",
         dim: "insight",
@@ -710,7 +726,7 @@ const NOT_A_CURRENT_COUNT =
   /\bmarket\b|\btam\b|\bsam\b|\bsom\b|\bthere are\b|\btotal\b|\bworldwide\b|\bglobally\b|\bopportunity\b|\bpotential\b|\bindustry\b|\bcould reach\b|\bestimated\b|\bnationwide\b|\bin the (us|uk|world)\b/i;
 
 const RESEARCH_CONTEXT =
-  /\binterview\w*\b|\btalked to\b|\bspoke (to|with)\b|\bsurveyed\b|\breached out\b|\bcold[- ]?(called|emailed)\b|\bconversations? with\b|\bwaitlist\b|\bsigned up for (early|the waitlist)\b/i;
+  /\binterview\w*\b|\btalk(?:ed|ing)? (?:to|with)\b|\bspoke (?:to|with)\b|\bspeak(?:ing)? (?:to|with)\b|\bsurvey\w*\b|\breach(?:ed|ing)? out\b|\bcold[- ]?(?:called|emailed)\b|\bconversations? with\b|\bwaitlist\b|\bsigned up for (?:early|the waitlist)\b|\basked\b/i;
 
 const PAST_OR_FUTURE =
   /\blast (year|month|quarter)\b|\bin 20\d\d\b|\bwhen we (started|began|launched)\b|\boriginally\b|\bat first\b|\bused to\b|\bpreviously\b|\bwe expect\b|\bwe project\b|\bwill (have|reach|be)\b|\btarget\w*\b|\bgoal\b|\bby (next|the end of)\b|\baim to\b|\bforecast\w*\b/i;
@@ -728,8 +744,10 @@ function countedPairs(text: string): Map<string, Set<string>> {
       ")\\b",
     "gi"
   );
-  for (const sent of sentences(text)) {
-    if (!isComparableCount(sent)) continue;
+  for (const raw of sentences(text)) {
+    if (!isComparableCount(raw)) continue;
+    // "0:24 Brokers do this today" is a video timestamp, not 24 brokers.
+    const sent = raw.replace(/\b\d{1,2}:\d{2}\b/g, " ");
     for (const m of sent.matchAll(re)) {
       const noun = m[2].toLowerCase();
       const num = m[1].toLowerCase().replace(/[,\s]/g, "");

@@ -10,12 +10,14 @@ import {
 } from "@/lib/application";
 import { CATEGORIES, masteryPct } from "@/lib/interview";
 import { Card, Donut } from "@/components/app/shared";
+import { DataControls } from "@/components/app/DataControls";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
 
 export function Dashboard() {
   const [data, setData] = useState(loadApp);
+  const reload = () => setData(loadApp());
   const answered = answeredCount(data);
   const next = firstUnanswered(data);
   const pct = Math.round((answered / QUESTIONS.length) * 100);
@@ -69,7 +71,7 @@ export function Dashboard() {
             <div className="flex items-center gap-4">
               <Donut total={data.strength} size={88} />
               <div className="text-sm text-muted-foreground">
-                from your last wholistic review
+                from your last whole-application review
               </div>
             </div>
           ) : (
@@ -200,7 +202,7 @@ export function Dashboard() {
         ) : (
           <div className="flex flex-wrap items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              Every question is answered. Run a wholistic review, then drill the
+              Every question is answered. Run a whole-application review, then drill the
               interview.
             </p>
             <Button asChild className="rounded-xl">
@@ -211,6 +213,8 @@ export function Dashboard() {
           </div>
         )}
       </Card>
+
+      <DataControls onChanged={reload} />
 
       {/* sections overview */}
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

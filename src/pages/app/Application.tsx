@@ -129,7 +129,7 @@ export function Application({ query }: { query: URLSearchParams }) {
         </div>
         <Button asChild className="rounded-xl">
           <a href="#/app/review">
-            <SearchCheck className="mr-1.5 h-4 w-4" /> Run wholistic review
+            <SearchCheck className="mr-1.5 h-4 w-4" /> Run whole-application review
           </a>
         </Button>
       </header>

@@ -344,7 +344,7 @@ export interface InterviewMastery {
 export interface AppData {
   answers: Record<string, string>;
   deadline?: string; // ISO date the user sets for their target batch
-  strength?: number; // last wholistic review total
+  strength?: number; // last whole-application review total
   strengthAt?: string;
   interview: Record<string, InterviewMastery>;
   chancing: Record<string, string>;
