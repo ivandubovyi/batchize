@@ -21,7 +21,8 @@ const ORIGIN = "https://ivandubovyi.github.io";
 const SITE = ORIGIN + BASE;
 
 const { QUESTIONS, SECTIONS } = await import(join(ROOT, ".content-data.mjs"));
-const { EXPECT, CHECK_CATALOGUE } = await import(join(ROOT, ".content-data.mjs"));
+const { EXPECT, CHECK_CATALOGUE, CATEGORIES, QUESTION_BANK, EXAMPLE_ANSWERS, EXAMPLE_COMPANY } =
+  await import(join(ROOT, ".content-data.mjs"));
 
 const esc = (s) =>
   String(s)
@@ -215,7 +216,7 @@ ${QUESTIONS.filter((x) => x.section === q.section && x.id !== q.id)
       `<a class="q" href="${BASE}/questions/${slug(x.id)}/"><b>${esc(x.label)}</b><span>${esc(x.tip)}</span></a>`
   )
   .join("\n")}
-<p><a href="${BASE}/questions/">See all ${QUESTIONS.length} questions →</a> &nbsp; <a href="${BASE}/red-flags/">The full list of red flags →</a></p>
+<p><a href="${BASE}/questions/">See all ${QUESTIONS.length} questions →</a> &nbsp; <a href="${BASE}/red-flags/">Red flags →</a> &nbsp; <a href="${BASE}/example/">Worked example →</a></p>
 `;
 
   return {
@@ -268,7 +269,9 @@ ${QUESTIONS.filter((q) => q.section === s.id)
 ).join("\n")}
 
 <h2>What gets checked, everywhere</h2>
-<p><a href="${BASE}/red-flags/">The full list of red flags, with the exact words each one catches →</a></p>
+<p><a href="${BASE}/red-flags/">The full list of red flags, with the exact words each one catches →</a><br>
+<a href="${BASE}/example/">A worked example of strong answers →</a><br>
+<a href="${BASE}/interview-questions/">The interview questions that come next →</a></p>
 ${UNIVERSAL.map(([h, b]) => `<div class="card"><h3>${esc(h)}</h3><p>${esc(b)}</p></div>`).join("\n")}
 
 <a class="big-cta" href="${BASE}/#/app">Check your application, free</a>
@@ -348,11 +351,118 @@ ${ambers.map(card).join("\n")}
   };
 }
 
+function interviewPage() {
+  const canonical = `${SITE}/interview-questions/`;
+  const body = `
+<h1>YC interview questions, and what each one is testing</h1>
+<p class="lead">The interview is ten minutes and the partners already read your application. What they ask next is usually the thing your application invited. These are the ${QUESTION_BANK.length} questions worth being able to answer without hesitating, grouped by what they are actually probing.</p>
+
+<div class="card">
+<p>Practise these out loud, not in your head. The gap between knowing an answer and being able to say it in one breath is the entire difference the interview measures, and it is invisible when you rehearse silently.</p>
+</div>
+
+${CATEGORIES.map(
+  (c) => `
+<div class="sec">${esc(c.title)}</div>
+${QUESTION_BANK.filter((q) => q.cat === c.id)
+  .map((q) => `<div class="card"><h3>${esc(q.q)}</h3><p><b>What they are testing:</b> ${esc(q.probe)}</p></div>`)
+  .join("\n")}
+`
+).join("\n")}
+
+<h2>The questions only your own application can produce</h2>
+<p>A fixed list like this one cannot ask you about the number in your progress answer that disagrees with the number in your traction answer. Those follow-ups are the ones that actually catch people, and they are generated from what you wrote, not from a bank.</p>
+
+<a class="big-cta" href="${BASE}/#/app/interview">Drill these against your own application, free</a>
+<p class="note">No account, no API key, nothing uploaded. The whole thing runs in your browser.</p>
+
+<p><a href="${BASE}/questions/">All ${QUESTIONS.length} application questions →</a> &nbsp; <a href="${BASE}/red-flags/">The full list of red flags →</a></p>
+`;
+
+  return {
+    path: "interview-questions/index.html",
+    url: canonical,
+    html: page({
+      title: `${QUESTION_BANK.length} YC interview questions, and what each one is testing`,
+      description: `The questions YC partners ask in the ten-minute interview, grouped by what they are probing: product, traction, market, team, business model and insight. Free practice tool, runs in your browser.`,
+      canonical,
+      body,
+      breadcrumb: `<a href="${BASE}/">Batchize</a> / Interview questions`,
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: QUESTION_BANK.map((q) => ({
+          "@type": "Question",
+          name: q.q,
+          acceptedAnswer: { "@type": "Answer", text: q.probe },
+        })),
+      },
+    }),
+  };
+}
+
+function examplePage() {
+  const canonical = `${SITE}/example/`;
+  const shown = ["one_liner", "product_description", "how_far", "why_idea", "whats_new", "competitors", "money", "hacked_system"];
+
+  const body = `
+<h1>What a strong YC application answer looks like</h1>
+<p class="lead">A worked example, answer by answer, with what makes each one work. ${esc(EXAMPLE_COMPANY)} does not exist: it was written to show a standard, not to describe a real startup.</p>
+
+<div class="card">
+<p><b>This is fictional and deliberately so.</b> Real applications that got in are not public, and inventing a company that supposedly did would be exactly the kind of unverifiable claim this whole tool exists to catch. Every number below was made up to be internally consistent, which is the only property that matters for an example.</p>
+</div>
+
+<h2>Do not copy these</h2>
+<p>Templates are the reason a partner can spot an application written by somebody who read a blog post. What is worth taking from these is the shape: a number where a number belongs, a named alternative instead of "no competitors", a specific thing you did instead of a description of a market.</p>
+
+${shown
+  .map((id) => {
+    const q = QUESTIONS.find((x) => x.id === id);
+    if (!q || !EXAMPLE_ANSWERS[id]) return "";
+    const reqs = requirements(q);
+    return `
+<div class="sec">${esc(q.label)}</div>
+<div class="card"><p style="color:var(--fg)">${esc(EXAMPLE_ANSWERS[id])}</p></div>
+<p><b>Why it works:</b> ${esc(reqs[0] ?? "")} ${esc(reqs.slice(1, 3).join(" "))}</p>
+<p><a href="${BASE}/questions/${slug(id)}/">More on this question →</a></p>
+`;
+  })
+  .join("\n")}
+
+<h2>It scores 87 out of 100 on the checker</h2>
+<p>Not 100, deliberately. The example is checked by the same engine as your application on every build, and it is a strong application rather than a perfect one, because a perfect example teaches a standard nobody meets. You can load it into the tool in one click and see exactly what it still gets marked down for.</p>
+
+<a class="big-cta" href="${BASE}/#/app">Load the example, then write your own</a>
+<p class="note">No account, no API key, nothing uploaded. The whole checker runs in your browser.</p>
+
+<p><a href="${BASE}/questions/">All ${QUESTIONS.length} application questions →</a> &nbsp; <a href="${BASE}/red-flags/">The full list of red flags →</a></p>
+`;
+
+  return {
+    path: "example/index.html",
+    url: canonical,
+    html: page({
+      title: "What a strong YC application answer looks like (worked example)",
+      description: `A worked example of strong YC application answers, with what makes each one work. Deliberately fictional, deliberately not perfect: it scores 87/100 on the same checker your own application gets.`,
+      canonical,
+      body,
+      breadcrumb: `<a href="${BASE}/">Batchize</a> / Worked example`,
+    }),
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Write
 // ---------------------------------------------------------------------------
 
-const pages = [indexPage(), redFlagsPage(), ...QUESTIONS.map(questionPage)];
+const pages = [
+  indexPage(),
+  redFlagsPage(),
+  interviewPage(),
+  examplePage(),
+  ...QUESTIONS.map(questionPage),
+];
 
 for (const p of pages) {
   const full = join(DIST, p.path);
@@ -362,7 +472,7 @@ for (const p of pages) {
 
 const urls = [
   { loc: SITE + "/", priority: "1.0" },
-  ...pages.map((p) => ({ loc: p.url, priority: p.path.endsWith("s/index.html") ? "0.9" : "0.7" })),
+  ...pages.map((p) => ({ loc: p.url, priority: p.path.split("/").length === 2 && !p.path.startsWith("questions/") ? "0.9" : p.path === "questions/index.html" ? "0.9" : "0.7" })),
 ];
 
 await writeFile(

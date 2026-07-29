@@ -84,6 +84,24 @@ export function Insight() {
         <span className="shrink-0 text-sm font-semibold text-primary">Read it →</span>
       </a>
 
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        Also free to read:{" "}
+        <a
+          className="font-semibold text-primary hover:underline"
+          href={`${import.meta.env.BASE_URL}example/`}
+        >
+          a worked example of strong answers
+        </a>{" "}
+        and{" "}
+        <a
+          className="font-semibold text-primary hover:underline"
+          href={`${import.meta.env.BASE_URL}interview-questions/`}
+        >
+          the interview questions that come next
+        </a>
+        .
+      </p>
+
       <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground">
         The checks are tuned against a labelled corpus of realistic answers and
         measured on both what they catch and what they wrongly flag, because a
