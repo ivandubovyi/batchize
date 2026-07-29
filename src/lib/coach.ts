@@ -70,15 +70,18 @@ function emptyState(): CoachReply {
         "Quick score: eleven short questions, about a minute.",
         "Application: the real questions, starting with your one-liner and how far along you are.",
       ]),
+      "",
+      "Once anything is written I can tell you your weakest answer, what to fix first, how to tighten a specific answer, and what partners will push on in the interview.",
     ].join("\n"),
-    chips: [
-      { label: "What do you actually do?", send: "What can you help me with?" },
-    ],
+    chips: [],
   };
 }
 
 function capabilities(d: AppData): CoachReply {
   const n = QUESTIONS.filter((x) => answered(d, x.id)).length;
+  // With nothing written yet there is no application to describe, so point
+  // them at where to start instead of claiming to have read zero answers.
+  if (n === 0) return emptyState();
   return {
     text: [
       `I am a coach for this specific application. I have read all ${n} answers you have written and I answer using them, quoting your own words back at you.`,
