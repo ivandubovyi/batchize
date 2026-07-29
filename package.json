@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build && npm run content",
     "preview": "vite preview",
     "content": "./node_modules/.bin/esbuild ./scripts/content-entry.ts --bundle --format=esm --outfile=.content-data.mjs --log-level=warning && node scripts/gen-content.mjs && rm -f .content-data.mjs",
-    "traffic": "node scripts/traffic.mjs"
+    "traffic": "node scripts/traffic.mjs",
+    "deploy": "sh scripts/deploy.sh"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.1",
